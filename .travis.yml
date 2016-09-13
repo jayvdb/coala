@@ -1,0 +1,31 @@
+language: python
+python:
+  - 3.4
+  - 3.5
+  - nightly
+
+sudo: required
+dist: trusty
+addons:
+  apt:
+    sources:
+      - debian-sid
+    packages:
+      - r-base
+
+matrix:
+  include:
+    - env: FORCE_TEST_ON_CIRCLECI=1
+
+install:
+  - echo `which npm` `which go`
+  - sudo rm `which npm` `which go`
+  - sudo apt-get install golang npm
+  - pip install -r requirements.txt -r test-requirements.txt -r docs-requirements.txt
+
+script:
+  - if [[ -n "$FORCE_TEST_ON_CIRCLECI" ]]; then echo "Check Circle CI"; false; fi
+  - bash .misc/tests.sh
+
+notifications:
+  email: false
