@@ -1,0 +1,41 @@
+language: python
+python:
+  - 3.4
+  - 3.5
+  - nightly
+
+sudo: required
+dist: trusty
+addons:
+  apt:
+    packages:
+      - r-base
+
+matrix:
+  include:
+    - env: DOCS=1
+      python: 3.4
+    - env: FORCE_TEST_ON_CIRCLECI=1
+      language: generic
+
+install:
+  - echo `which npm` `which go`
+  - sudo rm `which npm` `which go`
+  - sudo apt-get install golang npm
+  - pip install -r requirements.txt -r test-requirements.txt -r docs-requirements.txt
+
+script:
+  - if [[ -n "$FORCE_TEST_ON_CIRCLECI" ]]; then echo "Check Circle CI"; false; fi
+  - |
+    if [[ "$DOCS" == "1" ]]; then
+      rm -rf docs/API && make -C docs clean
+      sphinx-apidoc -f -o docs/API/ coalib
+      make -C docs html SPHINXOPTS=-W
+    else
+      bash .misc/tests.sh
+      python setup.py install
+      pip install coala-bears colorama==0.3.6 --pre -U
+    fi
+
+notifications:
+  email: false
