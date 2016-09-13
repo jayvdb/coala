@@ -1,0 +1,15 @@
+language: python
+python:
+  - 3.4
+
+sudo: required
+dist: trusty
+
+install:
+  - pip install -r requirements.txt -r test-requirements.txt -r docs-requirements.txt
+
+script:
+  - bash .misc/tests.sh
+
+notifications:
+  email: false
