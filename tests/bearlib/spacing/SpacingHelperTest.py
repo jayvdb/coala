@@ -74,6 +74,9 @@ class SpacingHelperTest(unittest.TestCase):
     def test_replace_spaces_with_tabs(self):
         self.assertRaises(TypeError, self.uut.replace_spaces_with_tabs, 5)
 
+        s = '\t$html = file_get_html($target);\t'
+        self.assertEqual(self.uut.replace_spaces_with_tabs(s), s)
+
         self.assertEqual(self.uut.replace_spaces_with_tabs(""), "")
         self.assertEqual(self.uut.replace_spaces_with_tabs(" "), " ")
         self.assertEqual(self.uut.replace_spaces_with_tabs("    "), "\t")

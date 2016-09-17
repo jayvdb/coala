@@ -45,7 +45,7 @@ class SpacingHelper(SectionCreatable):
         return line.expandtabs(self.tab_width)
 
     @enforce_signature
-    def replace_spaces_with_tabs(self, line: str):
+    def replace_spaces_with_tabs(self, line: str, tab_for_single_space=False):
         """
         Replaces spaces with tabs where possible. However in no case only one
         space will be replaced by a tab.
@@ -63,6 +63,8 @@ class SpacingHelper(SectionCreatable):
         no_tabs = line.expandtabs(tab_width)
         chunks = []
 
+        one_space_filler = '\t' if tab_for_single_space else ' '
+
         for i in range(0, len(no_tabs), tab_width):
             chunk = no_tabs[i:i + tab_width]
             non_whitespace = chunk.rstrip(' \t')
@@ -75,7 +77,7 @@ class SpacingHelper(SectionCreatable):
                 lookahead = no_tabs[i + tab_width]
 
                 if lookahead in ['\t', ' ']:
-                    chunks.append(non_whitespace + '\t')
+                    chunks.append(non_whitespace + one_space_filler)
                 else:
                     chunks.append(non_whitespace + ' ')
             elif len(non_whitespace) != tab_width and len(chunk) == tab_width:
