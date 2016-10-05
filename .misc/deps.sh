@@ -20,9 +20,11 @@ deps_julia="julia"
 deps_julia_packages="Lint"
 sudo apt-get install $deps $deps_python_gi $deps_python_dbus $deps_ruby_npm $deps_julia
 
+git config --global 'url.https://'.insteadOf 'ssh://'
 for julia_package in $deps_julia_packages ; do
   julia -e 'Pkg.add("'$julia_package'")'
 done
+git config --global --remove-section 'url.https://'
 
 for dep_version in "${dep_versions[@]}" ; do
   pyenv install -ks $dep_version
