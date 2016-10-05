@@ -9,8 +9,9 @@ case $CIRCLE_NODE_INDEX in
 esac
 
 # apt-get commands
-sudo add-apt-repository -y ppa:staticfloat/juliareleases
-sudo add-apt-repository -y ppa:staticfloat/julia-deps
+export DEBIAN_FRONTEND=noninteractive
+curl -sSL "https://ftp-master.debian.org/keys/archive-key-7.0.asc" | sudo -E apt-key add -
+echo "deb http://ftp.us.debian.org/debian unstable main contrib non-free" | sudo tee -a /etc/apt/sources.list > /dev/null
 sudo apt-get update
 deps="indent libclang1-3.4 r-base"
 deps_python_dbus="libdbus-glib-1-dev libdbus-1-dev"
