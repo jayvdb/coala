@@ -290,7 +290,7 @@ def collect_registered_bears_dirs(entrypoint):
     for ep in pkg_resources.iter_entry_points(entrypoint):
         registered_package = None
         try:
-            registered_package = ep.load()
+            registered_package = ep.load(require=False)
         except pkg_resources.DistributionNotFound:
             continue
         collected_dirs.append(os.path.abspath(
