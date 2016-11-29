@@ -1,4 +1,4 @@
-from coalib.bearlib.aspects import aspectclass
+from coalib.bearlib.aspects import aspectclass  # Ignore PyUnusedCodeBear
 
 import pytest
 

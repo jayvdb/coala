@@ -12,9 +12,19 @@ use_spaces = True
 # will be executed sequentially; also we need the LineLengthBear to double
 # check the line length because PEP8Bear sometimes isn't able to correct the
 # linelength.
-bears = SpaceConsistencyBear, PyUnusedCodeBear, QuotesBear
+bears = SpaceConsistencyBear, QuotesBear
 language = Python
 preferred_quotation = '
+
+[python_imports]
+# PyUnusedCodeBear is run seperately beacause we need to check for unused 
+# imports. Do not set default_action to ApplyPatchAction: it may lead to some 
+# required imports being removed resulting in coala to behave weirdly.
+
+bears = PyUnusedCodeBear
+language = Python
+
+remove_all_unused_imports = true
 
 [autopep8]
 bears = PEP8Bear

@@ -3,6 +3,7 @@ import copy
 from coalib.bears.BEAR_KIND import BEAR_KIND
 from coalib.collecting import Dependencies
 from coalib.collecting.Collectors import collect_bears
+# Ignore PyUnusedCodeBear
 from coalib.output.printers.LOG_LEVEL import LOG_LEVEL
 from coalib.settings.Setting import Setting
 

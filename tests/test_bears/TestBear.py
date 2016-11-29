@@ -1,5 +1,5 @@
 from coalib.bears.LocalBear import LocalBear
-from coalib.results.Result import Result
+from coalib.results.Result import Result  # Ignore PyUnusedCodeBear
 
 
 class TestBear(LocalBear):

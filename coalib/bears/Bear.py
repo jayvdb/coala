@@ -12,8 +12,10 @@ from pyprint.Printer import Printer
 from coala_utils.decorators import (enforce_signature, classproperty,
                                     get_public_members)
 
+# Start ignoring PyUnusedCodeBear
 from coalib.bears.requirements.PackageRequirement import PackageRequirement
 from coalib.bears.requirements.PipRequirement import PipRequirement
+# Stop ignoring
 from coalib.output.printers.LogPrinter import LogPrinterMixin
 from coalib.results.Result import Result
 from coalib.settings.FunctionMetadata import FunctionMetadata

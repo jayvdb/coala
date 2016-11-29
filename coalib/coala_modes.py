@@ -46,6 +46,7 @@ def mode_json(args):
     from coalib.misc.Exceptions import get_exitcode
     from coalib.output.JSONEncoder import create_json_encoder
     from coalib.output.printers.LogPrinter import LogPrinter
+    # Ignore PyUnusedCodeBear
     from coalib.parsing.DefaultArgParser import default_arg_parser
     from coalib.settings.ConfigurationGathering import get_filtered_bears
 

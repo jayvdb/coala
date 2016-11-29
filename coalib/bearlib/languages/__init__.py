@@ -2,7 +2,7 @@
 This directory holds means to get generic information for specific languages.
 """
 
-from .Language import Language
+from .Language import Language  # Ignore PyUnusedCodeBear
 from .Language import Languages
 
 from .definitions.Unknown import Unknown
