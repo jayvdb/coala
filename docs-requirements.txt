@@ -1,4 +1,4 @@
-# all requirements are needed so that autodoc can find them
+# all requirements are needed so that autodoc can find them foo
 -r requirements.txt
 -r test-requirements.txt
 sphinx~=1.4
