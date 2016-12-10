@@ -9,7 +9,7 @@ if platform.system() == 'Windows':  # pragma: no cover
     cmd = ['cmd', '/c'] + cmd
 
 
-@unittest.skipIf(shutil.which('gem') is None or bool(call_without_output(cmd)),
+@unittest.skipIf(shutil.which('gem') is None,
                  'Gem is not installed.')
 class GemRequirementTestCase(unittest.TestCase):
 

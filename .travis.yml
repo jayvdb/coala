@@ -4,6 +4,9 @@ python:
   - 3.5
   - 3.6-dev
 
+sudo: required
+dist: trusty
+
 addons:
   apt:
     packages:
