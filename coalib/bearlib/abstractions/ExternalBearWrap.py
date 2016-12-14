@@ -6,10 +6,9 @@ from collections import OrderedDict
 from coalib.bears.LocalBear import LocalBear
 from coala_utils.decorators import enforce_signature
 from coalib.misc.Shell import run_shell_command
-from coalib.results.Diff import Diff  # Ignore PyUnusedCodeBear
+from coalib.results.Diff import Diff
 from coalib.results.Result import Result
 from coalib.results.SourceRange import SourceRange
-# Ignore PyUnusedCodeBear
 from coalib.results.RESULT_SEVERITY import RESULT_SEVERITY
 from coalib.settings.FunctionMetadata import FunctionMetadata
 
