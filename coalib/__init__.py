@@ -6,8 +6,12 @@ formatting and settings are also included in coalib.
 
 
 import sys
+
+from distutils.version import StrictVersion
 from os.path import join, dirname
 
+
+PYTHON_VERSION_34 = StrictVersion('3.4')
 
 VERSION_FILE = join(dirname(__file__), 'VERSION')
 
@@ -22,6 +26,6 @@ __version__ = VERSION
 
 
 def assert_supported_version():  # pragma: no cover
-    if not sys.version_info > (3, 3):
+    if sys.version_info < PYTHON_VERSION_34:
         print('coala supports only python 3.4 or later.')
         exit(4)
