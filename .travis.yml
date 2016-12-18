@@ -1,8 +1,9 @@
 language: python
 python:
-  - 3.4
-  - 3.5
-  - 3.6-dev
+  - 3.3
+  # 3.4
+  # 3.5
+  # 3.6-dev
 
 cache: pip
 
@@ -29,17 +30,21 @@ before_script:
   - julia -e 'Pkg.add("Lint")'
 
 script:
-  - bash .misc/tests.sh
-  - python setup.py install
-  - pip install coala-bears --pre -U
-  # https://github.com/coala/coala-bears/issues/1037
   - >
-    if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
-      python3 -m nltk.downloader punkt maxent_treebank_pos_tagger averaged_perceptron_tagger
+    if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then
+      python setup.py install | grep -q 'coala supports only python 3.4 or later'
     else
-      sed -i '/bears = GitCommitBear/d' .coafile
+      bash .misc/tests.sh
+      python setup.py install
+      pip install coala-bears --pre -U
+      # https://github.com/coala/coala-bears/issues/1037
+      if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+        python3 -m nltk.downloader punkt maxent_treebank_pos_tagger averaged_perceptron_tagger
+      else
+        sed -i '/bears = GitCommitBear/d' .coafile
+      fi
+      coala --non-interactive
     fi
-  - coala --non-interactive
   - bash .misc/deploy.coverage.sh
   - make -C docs clean
   - python setup.py docs
