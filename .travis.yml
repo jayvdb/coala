@@ -12,8 +12,6 @@ matrix:
       osx_image: xcode6.4
       language: generic
       python: 3.5
-      env:
-        - DYLD_LIBRARY_PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/
 
 cache: pip
 
