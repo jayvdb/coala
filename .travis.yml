@@ -27,7 +27,8 @@ before_install:
   # Travis automatically installs the `requirements.txt` in "install" stage
   - cp requirements.txt requirements.orig
   - cat test-requirements.txt docs-requirements.txt >> requirements.txt
-  - sed -i '/^-r/d' requirements.txt
+  - wget -O - https://raw.githubusercontent.com/coala/coala-bears/master/requirements.txt >> requirements.txt
+  - sed '/^coala[^-_]/d;/^-r/d' requirements.txt > requirements.new && mv requirements.new requirements.txt
 
 before_script:
   # Restore the original requirements.txt
