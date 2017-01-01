@@ -11,10 +11,8 @@ cache: pip
 addons:
   apt:
     packages:
-      - r-base
       - clang-3.4
     sources:
-      - ubuntu-toolchain-r-test
       - llvm-toolchain-precise
 
 before_install:

@@ -14,10 +14,8 @@ case $CIRCLE_NODE_INDEX in
 esac
 
 # apt-get commands
-sudo apt-get update
-deps="indent libclang1-3.4 r-base"
-deps_ruby_npm="gem nodejs"
-sudo apt-get install $deps $deps_ruby_npm
+deps="libclang1-3.4"
+sudo apt-get install $deps
 
 for dep_version in "${dep_versions[@]}" ; do
   pyenv install -ks $dep_version
@@ -34,6 +32,3 @@ if [ "$CIRCLE_NODE_INDEX" = "0" ] ; then
 fi
 
 bash .misc/deps.nltk.sh
-
-# gem installations
-gem install ruby
