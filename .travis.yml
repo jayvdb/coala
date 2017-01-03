@@ -37,6 +37,7 @@ before_install:
       brew install python3
       sudo ln -sf $(which python3) $(which python)
       sudo ln -sf $(which pip3) $(which pip 2>/dev/null || echo /usr/bin/pip)
+      ls -l $DYLD_LIBRARY_PATH
     fi
 
   # https://github.com/coala/coala/issues/3183
