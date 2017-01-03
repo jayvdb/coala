@@ -16,6 +16,8 @@ addons:
       - llvm-toolchain-precise
 
 before_install:
+  - updatedb
+  - locate libclang
   - if [[ $TRAVIS_OS_NAME == osx ]]; then TRAVIS_PYTHON_VERSION=3.5; fi
   - export TRAVIS_PYTHON_VERSION_MAJOR=${TRAVIS_PYTHON_VERSION%.[0-9]}
   - export TRAVIS_PYTHON_VERSION_MINOR=${TRAVIS_PYTHON_VERSION#[0-9].}
