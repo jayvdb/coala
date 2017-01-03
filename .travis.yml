@@ -47,7 +47,12 @@ before_install:
 
   # OSX is not a real Travis 'python' image, so it does not install
   # requirements.txt automatically.
-  - if [[ $TRAVIS_OS_NAME == osx ]]; then pip install -r requirements.txt; fi
+  - >
+    if [[ $TRAVIS_OS_NAME == osx ]]; then
+      sed -i.bak '/clang/d' requirements.txt;
+      echo libclang-py==3.6.0 >> requirements.txt;
+      pip install -r requirements.txt;
+    fi
 
 before_script:
   # Restore the original requirements.txt
