@@ -1,4 +1,4 @@
-[Default]
+[all]
 files = *.py, coalib/**/*.py, ./coala, tests/**/*.py
 ignore =
     tests/bearlib/languages/documentation/documentation_extraction_testdata/*.py,
@@ -7,7 +7,7 @@ ignore =
 max_line_length = 80
 use_spaces = True
 
-[python]
+[all.python]
 # Patches may conflict with autopep8 so putting them in own section so they
 # will be executed sequentially; also we need the LineLengthBear to double
 # check the line length because PEP8Bear sometimes isn't able to correct the
@@ -18,16 +18,16 @@ preferred_quotation = '
 
 default_actions = *: ApplyPatchAction
  
-[autopep8]
+[all.autopep8]
 bears = PEP8Bear, PycodestyleBear
 
 default_actions = PEP8Bear: ApplyPatchAction
 
-[linelength]  # Sometimes autopep8 makes too long lines, need to check after!
+[all.linelength]  # Sometimes autopep8 makes too long lines, need to check after!
 bears = LineLengthBear
 ignore_length_regex = ^.*https?://
 
-[DOCS]
+[all.DOCS]
 bears = SpaceConsistencyBear, LineLengthBear
 
 files = docs/**/*.rst, CONTRIBUTING.rst, README.rst
@@ -36,7 +36,7 @@ ignore_length_regex = ^.*https?://
 
 default_actions = SpaceConsistencyBear: ApplyPatchAction 
 
-[languagetool]
+[all.languagetool]
 enabled = False
 
 bears = LanguageToolBear
@@ -59,12 +59,12 @@ languagetool_disable_rules =
     ENGLISH_WORD_REPEAT_RULE,           # Found in code
     POSSESIVE_APOSTROPHE                # Confused by directory name "objects"
 
-[commit]
+[all.commit]
 bears = GitCommitBear
 shortlog_trailing_period = False
 shortlog_regex = ([^:]*[^: ]: [A-Z0-9*].*)
 
-[Pylint]
+[all.Pylint]
 enabled = False
 
 bears = PyLintBear
@@ -85,34 +85,34 @@ pylint_disable = missing-docstring, # Lots of functions don't need docstrings
                  bad-continuation # Our indentation style guide is
                                   # different from PEP
 
-[LineCounting]
+[all.LineCounting]
 enabled = False
 
 bears = LineCountBear
 max_lines_per_file = 1000
 
-[invalidlinks]
+[all.invalidlinks]
 enabled = False
 files = docs/**/*.rst
 ignore = docs/API
 bears = InvalidLinkBear
 
-[css]
+[all.css]
 bears = CSSLintBear
 files = docs/_static/**.css
 
-[rst]
+[all.rst]
 bears = reSTLintBear
 files = README.rst
 
-[text]
+[all.text]
 bears = SpaceConsistencyBear
 files =
     LICENSE, ISSUE_TEMPLATE, PULL_REQUEST_TEMPLATE.md, MANIFEST.in,
     **.sh, .travis.yml, circle.yml, setup.cfg, ./docs/_static/custom.css
 ignore = node_modules/**
 
-[TODOS]
+[all.TODOS]
 enabled = False
 
 bears = KeywordBear
