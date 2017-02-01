@@ -35,6 +35,7 @@ before_install:
       sudo ln -sf $(which pip3) $(which pip 2>/dev/null || echo /usr/bin/pip)
     fi
 
+  - python -c "import setuptools; print(setuptools.__version__)"
   # https://github.com/coala/coala/issues/3183
   # Travis automatically installs the `requirements.txt` in "install" stage
   - cp requirements.txt requirements.orig
