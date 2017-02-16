@@ -59,6 +59,7 @@ before_install:
 before_script:
   # Restore the original requirements.txt
   - mv requirements.orig requirements.txt
+  - pip list
 
 script:
   - >
