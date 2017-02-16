@@ -68,6 +68,7 @@ script:
       set -e
       bash .misc/tests.sh
       python setup.py bdist_wheel
+      pip list
       pip install ./dist/coala-*.whl
       pip install coala-bears[alldeps] --pre -U
       # https://github.com/coala/coala-bears/issues/1037
