@@ -60,6 +60,7 @@ before_script:
   # Restore the original requirements.txt
   - mv requirements.orig requirements.txt
   - pip list
+  - python -c "import setuptools; print(setuptools.__version__)"
 
 script:
   - >
