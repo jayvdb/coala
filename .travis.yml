@@ -38,14 +38,16 @@ before_install:
       sudo ln -sf $(which pip3) $(which pip 2>/dev/null || echo /usr/bin/pip)
     fi
 
-  # always use latest versions of pip and setuptools
-  - pip install pip setuptools -U
-
   # https://github.com/coala/coala/issues/3183
   # Travis automatically installs the `requirements.txt` in "install" stage
   - cp requirements.txt requirements.orig
   - cat test-requirements.txt docs-requirements.txt >> requirements.txt
   - sed -i.bak '/^-r/d' requirements.txt
+
+  # pip and setuptools use >= syntax, as it is problematic to restrict
+  # this to only recent versions.
+  # To ensure the minimum supported versions works, switch >= to ==.
+  - sed -i.bak 's/>=/==/' requirements.txt
 
   # OSX is not a real Travis 'python' image, so it does not install
   # requirements.txt automatically.
