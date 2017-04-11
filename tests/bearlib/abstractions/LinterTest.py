@@ -7,8 +7,6 @@ import unittest
 from unittest.mock import ANY, Mock
 from unittest.case import skipIf
 
-from dependency_management.Helper import is_executable_exists
-
 from coalib.bearlib.abstractions.Linter import linter
 from coalib.results.Diff import Diff
 from coalib.results.Result import Result
@@ -605,8 +603,7 @@ class LinterComponentTest(unittest.TestCase):
             '<ManualProcessingTestLinter linter object \\(wrapping ' +
             re.escape(repr(sys.executable)) + '\\) at 0x[a-fA-F0-9]+>')
 
-    @skipIf(platform.system() == 'Windows' and
-            not is_executable_exists('pwd'),
+    @skipIf(True,
             '`pwd` does not exist in Windows-cmd and `cd` is a built-in '
             'command which fails the executable-existence check from @linter.')
     def test_process_directory(self):

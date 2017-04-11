@@ -66,6 +66,7 @@ script:
       coverage run setup.py install | grep -q 'coala supports only python 3.4 or later'
     else
       set -e
+      sed -i 's/2.1/3.1/' requirements.txt
       bash .misc/tests.sh
       python setup.py bdist_wheel
       pip install ./dist/coala-*.whl
