@@ -5,6 +5,7 @@ pytest-cov~=2.2
 pytest-env~=0.6.0
 pytest-error-for-skips~=1.0
 pytest-mock~=1.1
+pytest-reqs~=0.0
 pytest-timeout~=1.0
 pytest-xdist~=1.14
 requests-mock~=1.2.0
