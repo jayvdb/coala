@@ -7,6 +7,8 @@ import unittest
 from unittest.mock import ANY, Mock
 from unittest.case import skipIf
 
+from dependency_management.Helper import is_executable_exists
+
 from coalib.bearlib.abstractions.Linter import linter
 from coalib.results.Diff import Diff
 from coalib.results.Result import Result
@@ -603,7 +605,8 @@ class LinterComponentTest(unittest.TestCase):
             '<ManualProcessingTestLinter linter object \\(wrapping ' +
             re.escape(repr(sys.executable)) + '\\) at 0x[a-fA-F0-9]+>')
 
-    @skipIf(True,
+    @skipIf(platform.system() == 'Windows' and
+            not is_executable_exists('pwd'),
             '`pwd` does not exist in Windows-cmd and `cd` is a built-in '
             'command which fails the executable-existence check from @linter.')
     def test_process_directory(self):
@@ -890,137 +893,3 @@ class LocalLinterReallifeTest(unittest.TestCase):
             "'not_supported_name' used. Is this a typo? If not, consider "
             "removing the capturing group to improve coala's "
             'performance.'])
-
-
-class GlobalLinterReallifeTest(unittest.TestCase):
-
-    def setUp(self):
-        self.section = Section('REALLIFE_TEST_SECTION')
-
-        self.test_program_path = get_testfile_name('test_linter.py')
-        self.test_program_regex = (
-            r'(?P<severity>\S+?): (?P<message>.*)')
-        self.test_program_severity_map = {'MAJOR': RESULT_SEVERITY.MAJOR}
-
-    def test_global_linter_bear(self):
-        create_arguments_mock = Mock()
-
-        class Handler:
-
-            @staticmethod
-            def create_arguments(config_file):
-                create_arguments_mock(config_file)
-                return ['MAJOR: Test Message']
-
-        uut = (linter('echo',
-                      global_bear=True,
-                      output_format='regex',
-                      output_regex=self.test_program_regex,
-                      severity_map=self.test_program_severity_map)
-               (Handler)
-               ({}, self.section, None))
-
-        results = list(uut.run())
-
-        expected = [Result(uut,
-                           'Test Message',
-                           severity=RESULT_SEVERITY.MAJOR)]
-
-        self.assertEqual(results, expected)
-        create_arguments_mock.assert_called_once_with(None)
-
-    def test_global_linter_bear_with_filename(self):
-        create_arguments_mock = Mock()
-
-        class Handler:
-
-            @staticmethod
-            def create_arguments(config_file):
-                create_arguments_mock(config_file)
-                return ['test.txt:MAJOR: Test Message']
-
-        output_regex = (
-            r'(?P<filename>\S+?):(?P<severity>\S+?): (?P<message>.*)'
-        )
-
-        uut = (linter('echo',
-                      global_bear=True,
-                      output_format='regex',
-                      output_regex=output_regex,
-                      severity_map=self.test_program_severity_map)
-               (Handler)
-               ({}, self.section, None))
-
-        results = list(uut.run())
-
-        expected = [
-            Result.from_values(
-                uut,
-                'Test Message',
-                'test.txt',
-                severity=RESULT_SEVERITY.MAJOR,
-            )
-        ]
-
-        self.assertEqual(results, expected)
-        create_arguments_mock.assert_called_once_with(None)
-
-    def test_global_linter_bear_use_stderr(self):
-        create_arguments_mock = Mock()
-
-        class Handler:
-
-            @staticmethod
-            def create_arguments(config_file):
-                create_arguments_mock(config_file)
-                return ['MAJOR: Test Message\nasd']
-
-        uut = (linter('echo',
-                      global_bear=True,
-                      output_format='regex',
-                      use_stderr=True,
-                      output_regex=self.test_program_regex,
-                      severity_map=self.test_program_severity_map)
-               (Handler)
-               ({}, self.section, None))
-
-        results = list(uut.run())
-        expected = [Result(uut,
-                           'Test Message',
-                           severity=RESULT_SEVERITY.MAJOR)]
-
-        self.assertEqual(results, expected)
-        create_arguments_mock.assert_called_once_with(None)
-
-    def test_create_arguments_not_implemented(self):
-        class Handler:
-            pass
-
-        uut = (linter('echo',
-                      global_bear=True,
-                      output_format='regex',
-                      output_regex=self.test_program_regex,
-                      severity_map=self.test_program_severity_map)
-               (Handler)
-               ({}, self.section, None))
-
-        with self.assertRaises(NotImplementedError):
-            list(uut.run())
-
-    def test_create_arguments_not_iterable(self):
-        class Handler:
-
-            @staticmethod
-            def create_arguments(config_file):
-                return None
-
-        uut = (linter('echo',
-                      global_bear=True,
-                      output_format='regex',
-                      output_regex=self.test_program_regex,
-                      severity_map=self.test_program_severity_map)
-               (Handler)
-               ({}, self.section, None))
-
-        with self.assertRaises(TypeError):
-            list(uut.run())
