@@ -7,6 +7,8 @@ import unittest
 from unittest.mock import ANY, Mock
 from unittest.case import skipIf
 
+from dependency_management.Helper import is_executable_exists
+
 from coalib.bearlib.abstractions.Linter import linter
 from coalib.results.Diff import Diff
 from coalib.results.Result import Result
@@ -38,15 +40,18 @@ class LinterComponentTest(unittest.TestCase):
 
     class RootDirTestLinter:
 
+        ROOT_DIR = 'C:\\' if platform.system() == 'Windows' else '/'
+        WRONG_DIR_MSG = ('The linter doesn\'t run the command in '
+                         'the right directory!')
+
         def create_arguments(self, *args, **kwargs):
-            return tuple()
+            return ('/c', 'cd') if platform.system() == 'Windows' else tuple()
 
         def get_config_dir(self):
             return '/'
 
         def process_output(self, output, *args, **kwargs):
-            assert output == '/\n', ("The linter doesn't run the command in "
-                                     'the right directory!')
+            assert output == '{}\n'.format(self.ROOT_DIR), self.WRONG_DIR_MSG
 
     class ManualProcessingTestLinter:
 
@@ -727,15 +732,12 @@ class LinterComponentTest(unittest.TestCase):
             '<ManualProcessingTestLinter linter object \\(wrapping ' +
             re.escape(repr(sys.executable)) + '\\) at 0x[a-fA-F0-9]+>')
 
-    @skipIf(platform.system() == 'Windows',
-            '`pwd` does not exist in Windows-cmd and `cd` is a built-in '
-            'command which fails the executable-existence check from @linter.')
     def test_process_directory(self):
         """
         The linter shall run the process in the right directory so tools can
         use the current working directory to resolve import like things.
         """
-        uut = (linter('pwd')
+        uut = (linter('cmd' if platform.system() == 'Windows' else 'pwd')
                (self.RootDirTestLinter)
                (self.section, None))
         uut.run('', [])  # Does an assert in the output processing
