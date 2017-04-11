@@ -7,6 +7,8 @@ import unittest
 from unittest.mock import ANY, Mock
 from unittest.case import skipIf
 
+from dependency_management.Helper import is_executable_exists
+
 from coalib.bearlib.abstractions.Linter import linter
 from coalib.results.Diff import Diff
 from coalib.results.Result import Result
@@ -38,6 +40,10 @@ class LinterComponentTest(unittest.TestCase):
 
     class RootDirTestLinter:
 
+        _root_dir = '/c' if platform.system() == 'Windows' else '/'
+        _msg = ("The linter doesn't run the command in "
+                'the right directory!')
+
         def create_arguments(self, *args, **kwargs):
             return tuple()
 
@@ -45,8 +51,7 @@ class LinterComponentTest(unittest.TestCase):
             return '/'
 
         def process_output(self, output, *args, **kwargs):
-            assert output == '/\n', ("The linter doesn't run the command in "
-                                     'the right directory!')
+            assert output == '{}\n'.format(self._root_dir), self._msg
 
     class ManualProcessingTestLinter:
 
@@ -600,7 +605,8 @@ class LinterComponentTest(unittest.TestCase):
             '<ManualProcessingTestLinter linter object \\(wrapping ' +
             re.escape(repr(sys.executable)) + '\\) at 0x[a-fA-F0-9]+>')
 
-    @skipIf(platform.system() == 'Windows',
+    @skipIf(platform.system() == 'Windows' and
+            not is_executable_exists('pwd'),
             '`pwd` does not exist in Windows-cmd and `cd` is a built-in '
             'command which fails the executable-existence check from @linter.')
     def test_process_directory(self):
