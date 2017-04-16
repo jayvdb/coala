@@ -67,9 +67,9 @@ script:
       coverage run setup.py install | grep -q 'coala supports only python 3.4 or later'
     fi
   - if [[ "$UNSUPPORTED" == true ]]; then exit; fi
-  - bash .misc/tests.sh
-  - python setup.py bdist_wheel
-  - pip install ./dist/coala-*.whl
+  # bash .misc/tests.sh
+  # python setup.py bdist_wheel
+  # pip install ./dist/coala-*.whl
   - >
     docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
       set -e -x
