@@ -82,6 +82,8 @@ script:
       rm -r bears/verilog tests/verilog/;
       export OS_NAME=posix;
       python3 -m pytest --cov --cov-fail-under=100;
+      echo foo > foo.md;
+      coala-ci -I --bears MarkdownBear --files foo.md;
     "
 
 notifications:
