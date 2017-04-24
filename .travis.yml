@@ -77,7 +77,8 @@ script:
       docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
         set -e -x
         pip3 uninstall --yes dependency_management;
-        pip3 install -U -e /coala/;
+        cd /coala;
+        python3 setup.py install;
         cd /coala-bears;
         rm bears/Constants.py;  # There are no tests covering this module
         rm bears/c_languages/CSharpLintBear.py tests/c_languages/CSharpLintBearTest.py;
