@@ -70,19 +70,23 @@ script:
   # bash .misc/tests.sh
   # python setup.py bdist_wheel
   # pip install ./dist/coala-*.whl
+  # The docker image only uses 3.6, so there is no benefit running this
+  # test on all Travis Python versions
   - >
-    docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
-      set -e -x
-      pip3 install -U -e /coala/;
-      cd /coala-bears;
-      rm bears/Constants.py;  # There are no tests covering this module
-      rm bears/c_languages/CSharpLintBear.py tests/c_languages/CSharpLintBearTest.py;
-      rm bears/java/InferBear.py tests/java/InferBearTest.py;
-      rm bears/haskell/GhcModBear.py tests/haskell/GhcModBearTest.py;
-      rm -r bears/verilog tests/verilog/;
-      export OS_NAME=posix;
-      python3 -m pytest --cov --cov-fail-under=100;
-    "
+    if [[ "$TRAVIS_PYTHON_VERSION" == '3.6' ]]; then
+      docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
+        set -e -x
+        pip3 install -U -e /coala/;
+        cd /coala-bears;
+        rm bears/Constants.py;  # There are no tests covering this module
+        rm bears/c_languages/CSharpLintBear.py tests/c_languages/CSharpLintBearTest.py;
+        rm bears/java/InferBear.py tests/java/InferBearTest.py;
+        rm bears/haskell/GhcModBear.py tests/haskell/GhcModBearTest.py;
+        rm -r bears/verilog tests/verilog/;
+        export OS_NAME=posix;
+        python3 -m pytest --cov --cov-fail-under=100;
+      "
+    fi
 
 notifications:
   email: false
