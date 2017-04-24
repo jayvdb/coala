@@ -62,11 +62,27 @@ if on_rtd:
               '-b {}'.format(current_version)])
         VERSION = get_version()
 
-with open('requirements.txt') as requirements:
-    required = requirements.read().splitlines()
+dependency_links = []
+VCS_PREFIXES = ('git+', 'hg+', 'bzr+', 'svn+')
 
-with open('test-requirements.txt') as requirements:
-    test_required = requirements.read().splitlines()
+def extract_requirements(filename):
+    requirements = []
+    with open(filename) as requirements_file:
+        lines = requirements_file.read().splitlines()
+        for package in lines:
+            if not package or package.startswith('#'):
+                continue
+            if any(package.startswith(prefix) for prefix in VCS_PREFIXES):
+                dependency_links.append(package)
+                package = package.split('=')[1]
+
+            requirements.append(package)
+
+    return requirements
+
+required = extract_requirements('requirements.txt')
+
+test_required = extract_requirements('test-requirements.txt')
 
 with open('README.rst') as readme:
     long_description = readme.read()
@@ -92,6 +108,7 @@ if __name__ == '__main__':
           platforms='any',
           packages=find_packages(exclude=['build.*', 'tests', 'tests.*']),
           install_requires=required,
+          dependency_links=dependency_links,
           tests_require=test_required,
           package_data={'coalib': ['default_coafile', 'VERSION',
                                    'bearlib/languages/documentation/*.coalang']
