@@ -76,7 +76,7 @@ script:
     if [[ "$TRAVIS_PYTHON_VERSION" == '3.6' ]]; then
       docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
         set -e -x
-        pip3 uninstall dependency_management;
+        pip3 uninstall --yes dependency_management;
         pip3 install -U -e /coala/;
         cd /coala-bears;
         rm bears/Constants.py;  # There are no tests covering this module
