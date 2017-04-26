@@ -66,6 +66,7 @@ script:
         pip3 install -U /coala/;
         cd /coala-bears;
         git checkout master;
+        python3 setup.py install;
         rm bears/Constants.py;  # There are no tests covering this module
         rm bears/c_languages/CSharpLintBear.py tests/c_languages/CSharpLintBearTest.py;
         rm bears/java/InferBear.py tests/java/InferBearTest.py;
