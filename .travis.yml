@@ -24,6 +24,9 @@ addons:
     sources:
       - llvm-toolchain-precise
 
+services:
+  - docker
+
 before_install:
   - if [[ $TRAVIS_OS_NAME == osx ]]; then TRAVIS_PYTHON_VERSION=3.5; fi
 
@@ -62,6 +65,23 @@ script:
       coverage run setup.py install | grep -q 'coala supports only python 3.4 or later'
     fi
   - if [[ "$UNSUPPORTED" == true ]]; then codecov || true; exit; fi
+  # The docker image only uses 3.6, so there is no benefit running this
+  # test on all Travis Python versions
+  - >
+    if [[ "$TRAVIS_PYTHON_VERSION" == '3.6' ]]; then docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c
+      "
+        set -e -x
+        pip3 install -U -e /coala/;
+        cd /coala-bears;
+        rm bears/Constants.py;  # There are no tests covering this module
+        rm bears/c_languages/CSharpLintBear.py tests/c_languages/CSharpLintBearTest.py;
+        rm bears/java/InferBear.py tests/java/InferBearTest.py;
+        rm bears/haskell/GhcModBear.py tests/haskell/GhcModBearTest.py;
+        rm -r bears/verilog tests/verilog/;
+        export OS_NAME=posix;
+        python3 -m pytest --cov --cov-fail-under=100;
+      "
+    fi
 
 notifications:
   email: false
