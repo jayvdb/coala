@@ -3,7 +3,7 @@ language: python
 python:
   - 3.4
 
-matrix:
+.matrix:
   include:
     # OSX build removed due to long build startup delays
     # Restore matrix job entry from d2d67fab to test OSX
