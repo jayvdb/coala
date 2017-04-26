@@ -63,8 +63,10 @@ script:
   - >
     docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
         set -e -x
-        pip3 install -U -e /coala/;
+        pip3 install -U /coala/;
         cd /coala-bears;
+        git pull;
+        pip3 install -U /coala-bears/;
         rm bears/Constants.py;  # There are no tests covering this module
         rm bears/c_languages/CSharpLintBear.py tests/c_languages/CSharpLintBearTest.py;
         rm bears/java/InferBear.py tests/java/InferBearTest.py;
