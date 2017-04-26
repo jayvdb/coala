@@ -61,8 +61,7 @@ script:
   # The docker image only uses 3.6, so there is no benefit running this
   # test on all Travis Python versions
   - >
-    docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c
-      "
+    docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
         set -e -x
         pip3 install -U -e /coala/;
         cd /coala-bears;
