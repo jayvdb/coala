@@ -73,7 +73,7 @@ script:
         rm bears/java/InferBear.py tests/java/InferBearTest.py;
         rm bears/haskell/GhcModBear.py tests/haskell/GhcModBearTest.py;
         rm bears/php/PHPMessDetectorBear.py tests/php/PHPMessDetectorBearTest.py;
-        rm tests/shell/ShellCheckBearTest.py tests/scala/ScalaLintBearTest.py tests/php/PHPCodeSnifferBearTest.py tests/haskell/HaskellLintBearTest.py;
+        rm tests/shell/ShellCheckBearTest.py tests/scala/ScalaLintBearTest.py tests/java/CheckstyleBearTest.py tests/php/PHPCodeSnifferBearTest.py tests/haskell/HaskellLintBearTest.py;
         rm -r bears/verilog tests/verilog/;
         export OS_NAME=posix;
         python3 -m pytest --cov --cov-fail-under=100;
