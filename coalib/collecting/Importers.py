@@ -9,6 +9,9 @@ from coala_utils.decorators import arguments_to_lists, yield_once
 
 
 def _import_module(file_path):
+    if not os.path.exists(file_path):
+        raise ImportError
+
     module_name = os.path.splitext(os.path.basename(file_path))[0]
     module_dir = os.path.dirname(file_path)
 
