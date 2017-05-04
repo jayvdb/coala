@@ -145,6 +145,9 @@ class Setting(StringConverter):
         self.key = key
         self.origin = str(origin)
 
+    def __str__(self):
+        return self.value
+
     def __path__(self, origin=None, glob_escape_origin=False):
         """
         Determines the path of this setting.
@@ -163,10 +166,7 @@ class Setting(StringConverter):
         :raises ValueError:        If no origin is specified in the setting
                                    nor the given origin parameter.
         """
-        if hasattr(self, 'value'):
-            strrep = self.value.strip()
-        else:
-            strrep = str(self).strip()
+        strrep = str(self).strip()
 
         if os.path.isabs(strrep):
             return strrep
