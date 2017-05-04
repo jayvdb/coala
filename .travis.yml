@@ -2,10 +2,8 @@ sudo: false
 language: python
 python:
   - 3.4
-  - 3.5
-  - 3.6
 
-matrix:
+.matrix:
   include:
     # OSX build removed due to long build startup delays
     # Restore matrix job entry from d2d67fab to test OSX
@@ -22,14 +20,17 @@ cache:
     - node_modules
     - docs/_build
 
-addons:
+.addons:
   apt:
     packages:
       - clang-3.4
     sources:
       - llvm-toolchain-precise
 
-before_install:
+services:
+  - docker
+
+.before_install:
   - if [[ $TRAVIS_OS_NAME == osx ]]; then TRAVIS_PYTHON_VERSION=3.5; fi
 
   - >
@@ -56,12 +57,27 @@ before_install:
   # For bears in .coafile requiring npm dependencies
   - npm install
 
-before_script:
+.before_script:
   # Restore the original requirements.txt
   - mv requirements.orig requirements.txt
   - python .misc/check_setuptools.py
 
 script:
+  - >
+    docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
+        set -e -x
+        pip3 install -U /coala/;
+        cd /coala-bears;
+        git pull;
+        python3 setup.py install;
+        rm bears/Constants.py;  # There are no tests covering this module
+        rm bears/c_languages/CSharpLintBear.py tests/c_languages/CSharpLintBearTest.py;
+        rm bears/java/InferBear.py tests/java/InferBearTest.py;
+        rm bears/haskell/GhcModBear.py tests/haskell/GhcModBearTest.py;
+        rm -r bears/verilog tests/verilog/;
+        export OS_NAME=posix;
+        python3 -m pytest --cov --cov-fail-under=100;
+      "
 
 notifications:
   email: false
