@@ -2,8 +2,10 @@ sudo: false
 language: python
 python:
   - 3.4
+  - 3.5
+  - 3.6
 
-.matrix:
+matrix:
   include:
     # OSX build removed due to long build startup delays
     # Restore matrix job entry from d2d67fab to test OSX
@@ -17,15 +19,12 @@ cache:
   directories:
     - node_modules
 
-.addons:
+addons:
   apt:
     packages:
       - clang-3.4
     sources:
       - llvm-toolchain-precise
-
-services:
-  - docker
 
 before_install:
   - if [[ $TRAVIS_OS_NAME == osx ]]; then TRAVIS_PYTHON_VERSION=3.5; fi
@@ -65,23 +64,19 @@ script:
       coverage run setup.py install | grep -q 'coala supports only python 3.4 or later'
     fi
   - if [[ "$UNSUPPORTED" == true ]]; then codecov || true; exit; fi
-  # The docker image only uses 3.6, so there is no benefit running this
-  # test on all Travis Python versions
+  - bash .misc/tests.sh
+  - python setup.py bdist_wheel
+  - pip install ./dist/coala-*.whl
+  - pip install coala-bears[alldeps] --pre -U
+  # https://github.com/coala/coala-bears/issues/1037
   - >
-    docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
-        set -e -x
-        pip3 install -U /coala/;
-        cd /coala-bears;
-        git pull;
-        python3 setup.py install;
-        rm bears/Constants.py;  # There are no tests covering this module
-        rm bears/c_languages/CSharpLintBear.py tests/c_languages/CSharpLintBearTest.py;
-        rm bears/java/InferBear.py tests/java/InferBearTest.py;
-        rm bears/haskell/GhcModBear.py tests/haskell/GhcModBearTest.py;
-        rm -r bears/verilog tests/verilog/;
-        export OS_NAME=posix;
-        python3 -m pytest --cov --cov-fail-under=100;
-      "
+    if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+      sed -i.bak '/bears = GitCommitBear/d' .coafile
+    fi
+  - coala --non-interactive
+  - make -C docs clean
+  - python setup.py docs
+  - codecov
 
 notifications:
   email: false
