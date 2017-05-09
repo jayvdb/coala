@@ -1,7 +1,10 @@
 import os
 from collections import OrderedDict
 
-from coala_utils.decorators import generate_repr
+from coala_utils.decorators import (
+    enforce_signature,
+    generate_repr,
+)
 from coala_utils.string_processing.StringConverter import StringConverter
 from coalib.parsing.Globbing import glob_escape
 
@@ -108,6 +111,7 @@ class Setting(StringConverter):
     conversions into common data types.
     """
 
+    @enforce_signature
     def __init__(self,
                  key,
                  value,
