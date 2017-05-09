@@ -206,6 +206,8 @@ class Setting(StringConverter):
 
         :return: A list of absolute paths.
         """
+        assert all(isinstance(elem, Setting) for elem in self), \
+            "self is %s; elems are %r" % (self.__class__.__name__, list(self))
         return [Setting.__path__(elem, self.origin) for elem in self]
 
     def __glob_list__(self):
@@ -216,6 +218,8 @@ class Setting(StringConverter):
         :return: A list of absolute paths in which the special characters in
                  the parent directories of the setting are escaped.
         """
+        assert all(isinstance(elem, Setting) for elem in self), \
+            "self is %s; elems are %r" % (self.__class__.__name__, list(self))
         return [Setting.__glob__(elem, self.origin) for elem in self]
 
     def __iter__(self, remove_backslashes=True):
