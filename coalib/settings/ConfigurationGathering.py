@@ -154,7 +154,7 @@ def load_configuration(arg_list, log_printer, arg_parser=None):
             bool(cli_sections['cli'].get('find_config', 'False')) and
             str(cli_sections['cli'].get('config')) == ''):
         cli_sections['cli'].add_or_create_setting(
-            Setting('config', re.escape(find_user_config(os.getcwd()))))
+            Setting('config', find_user_config(os.getcwd())))
 
     targets = []
     # We don't want to store targets argument back to file, thus remove it
@@ -172,7 +172,7 @@ def load_configuration(arg_list, log_printer, arg_parser=None):
 
         default_config_setting = base_sections['default'].get('config')
         if default_config_setting is not None:
-            default_config = path(default_config_setting, '.' + os.path.sep)
+            default_config = default_config_setting.value
             assert not default_config.endswith('_files.coafile'), 'config = %r' % default_config
         else:
             default_config = os.path.abspath('.coafile')
@@ -180,14 +180,14 @@ def load_configuration(arg_list, log_printer, arg_parser=None):
 
         user_config_setting = user_sections['default'].get('config')
         if user_config_setting is not None:
-            user_config = path(user_config_setting, '.' + os.path.sep)
+            user_config = user_config_setting.value
             assert not user_config.endswith('_files.coafile'), 'config = %r' % user_config
         else:
             user_config = default_config
 
         cli_config_setting = cli_sections['cli'].get('config')
         if cli_config_setting is not None:
-            config = path(cli_config_setting, '.' + os.path.sep)
+            config = cli_config_setting.value
             assert not config.endswith('_files.coafile'), \
                 'config = %r; setting = %r' % (config, cli_config_setting)
         else:
