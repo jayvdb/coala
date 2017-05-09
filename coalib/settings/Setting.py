@@ -89,6 +89,20 @@ def typed_ordered_dict(key_type, value_type, default):
         for key, value in OrderedDict(setting).items())
 
 
+def _path_worker(path: str, origin: str):
+    strrep = path.strip()
+    if os.path.isabs(strrep):
+        return strrep
+
+    assert origin is not None, 'Cannot determine path without origin.'
+
+    # We need to get full path before escaping since the full path
+    # may introduce unintended glob characters
+    origin = os.path.abspath(os.path.dirname(origin))
+
+    return os.path.normpath(os.path.join(origin, strrep))
+
+
 @generate_repr('key', 'value', 'origin', 'from_cli', 'to_append')
 class Setting(StringConverter):
     """
@@ -147,9 +161,6 @@ class Setting(StringConverter):
         """
         Determines the path of this setting.
 
-        Note: You can also use this function on strings, in that case the
-        origin argument will be taken in every case.
-
         :param origin:             The origin file to take if no origin is
                                    specified for the given setting. If you
                                    want to provide a directory, make sure it
@@ -161,6 +172,9 @@ class Setting(StringConverter):
         :raises ValueError:        If no origin is specified in the setting
                                    nor the given origin parameter.
         """
+        assert isinstance(self, Setting), \
+            'Using Setting.__path__ with str is no longer permitted'
+
         strrep = str(self).strip()
         if os.path.isabs(strrep):
             return strrep
@@ -203,7 +217,10 @@ class Setting(StringConverter):
 
         :return: A list of absolute paths.
         """
-        return [Setting.__path__(elem, self.origin) for elem in self]
+        assert all(isinstance(elem, str) for elem in self), \
+            'Elements must be strings; instead they are: %r' % list(self)
+
+        return [_path_worker(elem, self.origin) for elem in self]
 
     def __glob_list__(self):
         """
@@ -213,7 +230,11 @@ class Setting(StringConverter):
         :return: A list of absolute paths in which the special characters in
                  the parent directories of the setting are escaped.
         """
-        return [Setting.__glob__(elem, self.origin) for elem in self]
+        assert all(isinstance(elem, str) for elem in self), \
+            'Elements must be strings; instead they are: %r' % list(self)
+
+        origin = glob_escape(self.origin)
+        return [_path_worker(elem, origin) for elem in self]
 
     def __iter__(self, remove_backslashes=True):
         if self.to_append:
