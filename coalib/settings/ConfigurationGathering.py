@@ -170,11 +170,23 @@ def load_configuration(arg_list, log_printer, arg_parser=None):
             log_printer,
             silent=True)
 
-        default_config = str(base_sections['default'].get('config', '.coafile'))
-        user_config = str(user_sections['default'].get(
-            'config', default_config))
-        config = os.path.abspath(
-            str(cli_sections['cli'].get('config', user_config)))
+        default_config_setting = base_sections['default'].get('config')
+        if default_config_setting:
+            default_config = path(default_config_setting)
+        else:
+            default_config = os.path.abspath('.coafile')
+
+        user_config_setting = user_sections['default'].get('config')
+        if user_config_setting:
+            user_config = path(user_config_setting)
+        else:
+            user_config = default_config
+
+        cli_config_setting = cli_sections['cli'].get('config')
+        if cli_config_setting:
+            config = path(cli_config_setting)
+        else:
+            config = user_config
 
         try:
             save = bool(cli_sections['cli'].get('save', 'False'))
@@ -182,6 +194,10 @@ def load_configuration(arg_list, log_printer, arg_parser=None):
             # A file is deposited for the save parameter, means we want to save
             # but to a specific file.
             save = True
+
+        if config.endswith('_files.coafile'):
+            raise AssertionError('config = %r' % config)
+
 
         coafile_sections = load_config_file(config, log_printer, silent=save)
 
