@@ -86,6 +86,21 @@ def typed_ordered_dict(key_type, value_type, default):
         for key, value in OrderedDict(setting).items())
 
 
+def _path_worker(path: str, origin: str):
+	strrep = path.strip()
+	if os.path.isabs(strrep):
+		return strrep
+
+	assert origin is not None, 'Cannot determine path without origin.'
+
+	# We need to get full path before escaping since the full path
+	# may introduce unintended glob characters
+	origin = os.path.abspath(os.path.dirname(origin))
+
+	return os.path.normpath(os.path.join(origin, strrep))
+
+
+
 @generate_repr('key', 'value', 'origin', 'from_cli', 'to_append')
 class Setting(StringConverter):
     """
@@ -132,6 +147,10 @@ class Setting(StringConverter):
         if not isinstance(to_append, bool):
             raise TypeError('to_append needs to be a boolean value.')
 
+        if not isinstance(origin, str):
+            # This should be a ValueError to be backwards compatible
+            raise TypeError('origin needs to be a str value, not %s %r.' % (origin.__class__.__name__, origin))
+
         self.to_append = to_append
 
         StringConverter.__init__(
@@ -148,9 +167,6 @@ class Setting(StringConverter):
     def __path__(self, origin=None, glob_escape_origin=False):
         """
         Determines the path of this setting.
-
-        Note: You can also use this function on strings, in that case the
-        origin argument will be taken in every case.
 
         :param origin:             The origin file to take if no origin is
                                    specified for the given setting. If you
@@ -207,7 +223,8 @@ class Setting(StringConverter):
         """
         assert all(isinstance(elem, str) for elem in self), \
             "self is %s; elems are %r" % (self.__class__.__name__, list(self))
-        return [Setting.__path__(elem, self.origin) for elem in self]
+
+        return [_path_worker(elem, self.origin) for elem in self]
 
     def __glob_list__(self):
         """
@@ -219,7 +236,9 @@ class Setting(StringConverter):
         """
         assert all(isinstance(elem, str) for elem in self), \
             "self is %s; elems are %r" % (self.__class__.__name__, list(self))
-        return [Setting.__glob__(elem, self.origin) for elem in self]
+
+        origin = glob_escape(self.origin)
+        return [_path_worker(elem, origin) for elem in self]
 
     def __iter__(self, remove_backslashes=True):
         if self.to_append:
