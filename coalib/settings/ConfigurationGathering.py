@@ -171,19 +171,19 @@ def load_configuration(arg_list, log_printer, arg_parser=None):
             silent=True)
 
         default_config_setting = base_sections['default'].get('config')
-        if default_config_setting:
+        if default_config_setting is not None:
             default_config = path(default_config_setting)
         else:
             default_config = os.path.abspath('.coafile')
 
         user_config_setting = user_sections['default'].get('config')
-        if user_config_setting:
+        if user_config_setting is not None:
             user_config = path(user_config_setting)
         else:
             user_config = default_config
 
         cli_config_setting = cli_sections['cli'].get('config')
-        if cli_config_setting:
+        if cli_config_setting is not None:
             config = path(cli_config_setting)
         else:
             config = user_config
