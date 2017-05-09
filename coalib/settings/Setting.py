@@ -163,7 +163,6 @@ class Setting(StringConverter):
         :raises ValueError:        If no origin is specified in the setting
                                    nor the given origin parameter.
         """
-        assert isinstance(self, Setting), "self is %s" % self.__class__.__name__
         strrep = str(self).strip()
         if os.path.isabs(strrep):
             return strrep
@@ -206,7 +205,7 @@ class Setting(StringConverter):
 
         :return: A list of absolute paths.
         """
-        assert all(isinstance(elem, Setting) for elem in self), \
+        assert all(isinstance(elem, str) for elem in self), \
             "self is %s; elems are %r" % (self.__class__.__name__, list(self))
         return [Setting.__path__(elem, self.origin) for elem in self]
 
@@ -218,7 +217,7 @@ class Setting(StringConverter):
         :return: A list of absolute paths in which the special characters in
                  the parent directories of the setting are escaped.
         """
-        assert all(isinstance(elem, Setting) for elem in self), \
+        assert all(isinstance(elem, str) for elem in self), \
             "self is %s; elems are %r" % (self.__class__.__name__, list(self))
         return [Setting.__glob__(elem, self.origin) for elem in self]
 
