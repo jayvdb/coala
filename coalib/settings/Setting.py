@@ -161,6 +161,9 @@ class Setting(StringConverter):
         self.key = key
         self.origin = str(origin)
 
+    def __str__(self):
+        return self.value
+
     # use staticmethod !?
 
     def __path__(self, origin=None, glob_escape_origin=False):
