@@ -12,7 +12,7 @@ from coalib.parsing.Globbing import glob_escape
 class SettingTest(unittest.TestCase):
 
     def test_construction(self):
-        self.assertRaises(ValueError, Setting, '', 2, 2)
+        self.assertRaises(TypeError, Setting, '', 2, 2)
         self.assertRaises(TypeError, Setting, '', '', '', from_cli=5)
         self.assertRaisesRegex(TypeError, 'to_append',
                                Setting, '', '', '', to_append=10)
