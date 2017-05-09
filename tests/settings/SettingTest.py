@@ -16,6 +16,7 @@ class SettingTest(unittest.TestCase):
         self.assertRaises(TypeError, Setting, '', '', '', from_cli=5)
         self.assertRaisesRegex(TypeError, 'to_append',
                                Setting, '', '', '', to_append=10)
+        self.assertRaises(ValueError, Setting, '', 2)
 
     def test_path(self):
         self.uut = Setting(
