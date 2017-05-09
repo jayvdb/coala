@@ -3,7 +3,6 @@ import multiprocessing
 import os
 import platform
 import queue
-import re
 import subprocess
 import sys
 import unittest
@@ -87,7 +86,7 @@ class ProcessingTest(unittest.TestCase):
          targets) = gather_configuration(lambda *args: True,
                                          log_printer,
                                          arg_list=['--config',
-                                                   re.escape(config_path)])
+                                                   config_path])
         self.assertEqual(len(self.local_bears['cli']), 1)
         self.assertEqual(len(self.global_bears['cli']), 1)
         self.assertEqual(targets, [])
