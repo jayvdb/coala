@@ -188,7 +188,8 @@ def load_configuration(arg_list, log_printer, arg_parser=None):
         cli_config_setting = cli_sections['cli'].get('config')
         if cli_config_setting is not None:
             config = path(cli_config_setting, '.' + os.path.sep)
-            assert not config.endswith('_files.coafile'), 'config = %r' % config
+            assert not config.endswith('_files.coafile'), \
+                'config = %r; setting = %r' % (config, cli_config_setting)
         else:
             config = user_config
 
