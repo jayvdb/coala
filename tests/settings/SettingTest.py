@@ -16,6 +16,8 @@ class SettingTest(unittest.TestCase):
         self.assertRaises(TypeError, Setting, '', '', '', from_cli=5)
         self.assertRaisesRegex(TypeError, 'to_append',
                                Setting, '', '', '', to_append=10)
+        self.assertRaises(TypeError, Setting, '', '', list_delimiters=5)
+        self.assertRaises(TypeError, Setting, '', '', list_delimiters=None)
 
     def test_empty_key(self):
         with self.assertRaisesRegex(

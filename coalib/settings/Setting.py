@@ -1,5 +1,5 @@
 import os
-from collections import OrderedDict
+from collections import Iterable, OrderedDict
 
 from coala_utils.decorators import (
     enforce_signature,
@@ -102,7 +102,7 @@ class Setting(StringConverter):
                  value,
                  origin: str='',
                  strip_whitespaces: bool=True,
-                 list_delimiters=(',', ';'),
+                 list_delimiters: Iterable=(',', ';'),
                  from_cli: bool=False,
                  remove_empty_iter_elements: bool=True,
                  to_append: bool=False):
