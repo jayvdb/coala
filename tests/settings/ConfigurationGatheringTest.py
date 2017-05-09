@@ -12,7 +12,6 @@ from coalib.misc import Constants
 from coala_utils.ContextManagers import (
     make_temp, change_directory, retrieve_stdout)
 from coalib.output.printers.LogPrinter import LogPrinter
-from coala_utils.string_processing import escape
 from coalib.settings.ConfigurationGathering import (
     find_user_config, gather_configuration, load_configuration)
 
@@ -47,7 +46,7 @@ class ConfigurationGatheringTest(unittest.TestCase):
             sections, local_bears, global_bears, targets = (
                 gather_configuration(
                     *args,
-                    arg_list=['-S', 'test=5', '-c', escape(temporary, '\\'),
+                    arg_list=['-S', 'test=5', '-c', temporary,
                               '-s'] + self.min_args))
 
         self.assertEqual(
@@ -60,7 +59,7 @@ class ConfigurationGatheringTest(unittest.TestCase):
                 gather_configuration(*args,
                                      arg_list=['-S test=5',
                                                '-f *.java',
-                                               '-c ' + escape(temporary, '\\'),
+                                               '-c ' + temporary,
                                                '-b LineCountBear -s']))
 
         self.assertEqual(len(local_bears['cli']), 0)
@@ -134,7 +133,7 @@ class ConfigurationGatheringTest(unittest.TestCase):
         sections, local_bears, global_bears, targets = gather_configuration(
             lambda *args: True,
             self.log_printer,
-            arg_list=['-c', re.escape(config)])
+            arg_list=['-c', config])
 
         self.assertEqual(str(sections['test']),
                          "test {value : '2'}")
@@ -146,7 +145,7 @@ class ConfigurationGatheringTest(unittest.TestCase):
             lambda *args: True,
             self.log_printer,
             arg_list=['-c',
-                      re.escape(config),
+                      config,
                       '-S',
                       'test.value=3',
                       'test-2.bears=',
@@ -170,7 +169,7 @@ class ConfigurationGatheringTest(unittest.TestCase):
                 gather_configuration(lambda *args: True,
                                      self.log_printer,
                                      arg_list=['-S', 'value=1', 'test.value=2',
-                                               '-c', escape(temporary, '\\')] +
+                                               '-c', temporary] +
                                      self.min_args))
 
         self.assertEqual(sections['cli'],
@@ -187,7 +186,7 @@ class ConfigurationGatheringTest(unittest.TestCase):
                 lambda *args: True,
                 self.log_printer,
                 arg_list=['-S',
-                          'save=' + escape(filename, '\\'),
+                          'save=' + filename,
                           '-c=some_bad_filename'])
 
         with open(filename, 'r') as f:
@@ -201,14 +200,12 @@ class ConfigurationGatheringTest(unittest.TestCase):
                 self.log_printer,
                 arg_list=['-S',
                           'save=true',
-                          'config=' + escape(filename, '\\'),
+                          'config=' + filename,
                           'test.value=5'])
 
         with open(filename, 'r') as f:
             lines = f.readlines()
         os.remove(filename)
-        if os.path.sep == '\\':
-            filename = escape(filename, '\\')
         self.assertEqual(['[cli]\n',
                           'config = ' + filename + '\n',
                           '[test]\n',
