@@ -89,16 +89,20 @@ def typed_ordered_dict(key_type, value_type, default):
         for key, value in OrderedDict(setting).items())
 
 
-def _path_worker(path: str, origin: str):
+def _path_worker(path: str, origin: str, glob_escape_origin: bool=True):
     strrep = path.strip()
     if os.path.isabs(strrep):
         return strrep
 
-    assert origin is not None, 'Cannot determine path without origin.'
+    if origin is None:
+        raise ValueError('Cannot determine path without origin.')
 
     # We need to get full path before escaping since the full path
     # may introduce unintended glob characters
     origin = os.path.abspath(os.path.dirname(origin))
+
+    if glob_escape_origin:
+        origin = glob_escape(origin)
 
     return os.path.normpath(os.path.join(origin, strrep))
 
@@ -157,6 +161,8 @@ class Setting(StringConverter):
         self.key = key
         self.origin = str(origin)
 
+    # use staticmethod !?
+
     def __path__(self, origin=None, glob_escape_origin=False):
         """
         Determines the path of this setting.
@@ -175,24 +181,12 @@ class Setting(StringConverter):
         assert isinstance(self, Setting), \
             'Using Setting.__path__ with str is no longer permitted'
 
-        strrep = str(self).strip()
-        if os.path.isabs(strrep):
-            return strrep
+        path = str(self)
 
-        if hasattr(self, 'origin') and self.origin != '':
+        if self.origin != '':
             origin = self.origin
 
-        if origin is None:
-            raise ValueError('Cannot determine path without origin.')
-
-        # We need to get full path before escaping since the full path
-        # may introduce unintended glob characters
-        origin = os.path.abspath(os.path.dirname(origin))
-
-        if glob_escape_origin:
-            origin = glob_escape(origin)
-
-        return os.path.normpath(os.path.join(origin, strrep))
+        return _path_worker(path, origin, glob_escape_origin)
 
     def __glob__(self, origin=None):
         """
@@ -233,8 +227,8 @@ class Setting(StringConverter):
         assert all(isinstance(elem, str) for elem in self), \
             'Elements must be strings; instead they are: %r' % list(self)
 
-        origin = glob_escape(self.origin)
-        return [_path_worker(elem, origin) for elem in self]
+        return [_path_worker(elem, self.origin, glob_escape_origin=True)
+                for elem in self]
 
     def __iter__(self, remove_backslashes=True):
         if self.to_append:
