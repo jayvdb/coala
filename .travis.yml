@@ -43,8 +43,8 @@ before_install:
   # https://github.com/coala/coala/issues/3183
   # Travis automatically installs the `requirements.txt` in "install" stage
   - cp requirements.txt requirements.orig
-  - curl -fsSL -o bear-requirements.txt https://raw.githubusercontent.com/coala/coala-bears/master/bear-requirements.txt
-  - cat bear-requirements.txt test-requirements.txt docs-requirements.txt >> requirements.txt
+  - curl -fsSL -o requirements.txt https://raw.githubusercontent.com/coala/coala-bears/master/bear-requirements.txt
+  - cat requirements.orig test-requirements.txt docs-requirements.txt >> requirements.txt
   - sed -i.bak '/^vim-vint/d' requirements.txt
   - sed -i.bak '/^-r/d' requirements.txt
 
@@ -70,6 +70,7 @@ script:
   - python setup.py bdist_wheel
   - pip install ./dist/coala-*.whl
   - pip install coala-bears[alldeps] --pre -U
+  - pip uninstall vim-vint
   # https://github.com/coala/coala-bears/issues/1037
   - >
     if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
