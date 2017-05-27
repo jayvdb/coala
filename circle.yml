@@ -21,6 +21,8 @@ test:
     - pip install coala-bears[alldeps] --pre -U:
         parallel: true
         timeout: 900  # Allow 15 mins
+    - pip uninstall --yes vim-vint
+    - pip install chardet==3.0.3 docutils==0.13.1
     - coala --non-interactive:
         parallel: true
     - codecov:
