@@ -70,7 +70,7 @@ script:
   - python setup.py bdist_wheel
   - pip install ./dist/coala-*.whl
   - pip install coala-bears[alldeps] --pre -U
-  - pip uninstall vim-vint
+  - pip uninstall --yes vim-vint
   # https://github.com/coala/coala-bears/issues/1037
   - >
     if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
