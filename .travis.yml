@@ -62,6 +62,8 @@ before_script:
   - python .misc/check_setuptools.py
 
 script:
+  - unittest2pytest --write --no-diffs tests
+  - git diff
   - py.test
   - python setup.py bdist_wheel
   - pip install ./dist/coala-*.whl
