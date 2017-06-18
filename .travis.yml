@@ -5,16 +5,15 @@ python:
   - 3.5
   - 3.6
 
+
 matrix:
   include:
     # OSX build removed due to long build startup delays
     # Restore matrix job entry from d2d67fab to test OSX
     - python: 2.7
-      script:
-        - coverage run setup.py install || true
+      script: .misc/unsupported_script.sh
     - python: 3.3
-      script:
-        - coverage run setup.py install || true
+      script: .misc/unsupported_script.sh
 
 cache:
   pip: true
