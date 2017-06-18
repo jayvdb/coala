@@ -62,7 +62,7 @@ before_script:
 script:
   - >
     if [[ "$UNSUPPORTED" == true ]]; then
-      coverage run setup.py install | grep -q 'coala supports only python 3.4 or later'
+      coverage run setup.py install
     fi
   - if [[ "$UNSUPPORTED" == true ]]; then codecov || true; exit; fi
   - py.test
