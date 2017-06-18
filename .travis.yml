@@ -10,9 +10,11 @@ matrix:
     # OSX build removed due to long build startup delays
     # Restore matrix job entry from d2d67fab to test OSX
     - python: 2.7
-      env: UNSUPPORTED=true
+      script:
+        - coverage run setup.py install || true
     - python: 3.3
-      env: UNSUPPORTED=true
+      script:
+        - coverage run setup.py install || true
 
 cache:
   pip: true
@@ -60,11 +62,6 @@ before_script:
   - python .misc/check_setuptools.py
 
 script:
-  - >
-    if [[ "$UNSUPPORTED" == true ]]; then
-      coverage run setup.py install
-    fi
-  - if [[ "$UNSUPPORTED" == true ]]; then codecov || true; exit; fi
   - py.test
   - python setup.py bdist_wheel
   - pip install ./dist/coala-*.whl
@@ -77,6 +74,11 @@ script:
     fi
   - coala --non-interactive
   - python setup.py docs
+
+after_success:
+  - codecov
+
+after_failure:
   - codecov
 
 notifications:
