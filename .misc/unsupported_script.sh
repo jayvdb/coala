@@ -2,6 +2,9 @@
 
 set +e
 
+# Enable capturing the non-zero exit status of coverage instead of tee
+set -o pipefail
+
 coverage run setup.py install | tee setup.log
 
 retval=$?
