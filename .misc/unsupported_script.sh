@@ -3,12 +3,18 @@
 set +e
 
 coverage run setup.py install | tee setup.log
-SETUP_EXIT_CODE=$?
 
-grep -q 'coala supports only python 3.4 or later' setup.log
-GREP_EXIT_CODE=$?
+retval=$?
 
-# Error if setup.py does not fail, or no lines selected by grep
-if [[ $SETUP_EXIT_CODE == 0 || $GREP_EXIT_CODE == 1 ]]; then
-  exit 1
+if [[ $retval != 4 ]]; then
+  echo "Unexpected error code $?"
+  if [[ $retval == 0 ]]; then
+    exit 127
+  fi
+  exit $retval
 fi
+
+# error when no lines selected by grep
+set -e
+
+grep 'coala supports only python 3.4 or later' setup.log
