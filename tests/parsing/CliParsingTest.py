@@ -55,19 +55,16 @@ class CliParserTest(unittest.TestCase):
 
     def test_check_conflicts(self):
         sections = parse_cli(arg_list=['--save', '--no-config'])
-        with self.assertRaisesRegex(SystemExit, '2') as cm:
+        with self.assertRaises(SystemExit):
             check_conflicts(sections)
-            self.assertEqual(cm.exception.code, 2)
 
         sections = parse_cli(arg_list=['--no-config', '-S', 'val=42'])
         self.assertTrue(check_conflicts(sections))
 
         sections = parse_cli(arg_list=['--relpath'])
-        with self.assertRaisesRegex(SystemExit, '2') as cm:
+        with self.assertRaises(SystemExit):
             check_conflicts(sections)
-            self.assertEqual(cm.exception.code, 2)
 
         sections = parse_cli(arg_list=['--output', 'iraiseValueError'])
-        with self.assertRaisesRegex(SystemExit, '2') as cm:
+        with self.assertRaisesRegex(SystemExit):
             check_conflicts(sections)
-            self.assertEqual(cm.exception.code, 2)
