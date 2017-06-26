@@ -1,10 +1,17 @@
 sudo: false
 language: python
-python:
+.python:
   - 3.4
 
-.matrix:
-  include:
+# Set environment variable COALA_BRANCH=<branch> to override
+# the default.
+env:
+  global:
+    - SOURCE_BRANCH=$TRAVIS_BRANCH
+    - DOCKER_REPO=coala/base
+
+matrix:
+  .include:
     # OSX build removed due to long build startup delays
     # Restore matrix job entry from d2d67fab to test OSX
     - python: 2.7
@@ -13,6 +20,11 @@ python:
     - python: 3.3
       env: UNSUPPORTED=true
       script: .misc/check_unsupported.sh
+  include:
+    - services: docker
+      env: CHECK_DOCKER_BEARS=true
+      python: 3.4
+      script: .misc/check_docker_bears.sh
 
 cache:
   pip: true
@@ -27,8 +39,6 @@ cache:
     sources:
       - llvm-toolchain-precise
 
-services:
-  - docker
 
 .before_install:
   - if [[ $TRAVIS_OS_NAME == osx ]]; then TRAVIS_PYTHON_VERSION=3.5; fi
@@ -62,22 +72,7 @@ services:
   - mv requirements.orig requirements.txt
   - python .misc/check_setuptools.py
 
-script:
-  - >
-    docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
-        set -e -x
-        pip3 install -U /coala/;
-        cd /coala-bears;
-        git pull;
-        python3 setup.py install;
-        rm bears/Constants.py;  # There are no tests covering this module
-        rm bears/c_languages/CSharpLintBear.py tests/c_languages/CSharpLintBearTest.py;
-        rm bears/java/InferBear.py tests/java/InferBearTest.py;
-        rm bears/haskell/GhcModBear.py tests/haskell/GhcModBearTest.py;
-        rm -r bears/verilog tests/verilog/;
-        export OS_NAME=posix;
-        python3 -m pytest --cov --cov-fail-under=100;
-      "
+script: true
 
 notifications:
   email: false
