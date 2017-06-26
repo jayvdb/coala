@@ -616,9 +616,6 @@ li{0}{2}
                              '**** t [Section: ] ****' + '\n\n'
                              '!    ! [Severity: NORMAL]\n'
                              '!    ! msg\n'
-                             # Second results file isn't there, no context is
-                             # printed, only a warning log message which we
-                             # don't catch
                              '\n**** t [Section: ] ****' + '\n\n'
                              '!    ! [Severity: NORMAL]\n'
                              '!    ! {0}\n'.format(
