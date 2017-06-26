@@ -19,7 +19,7 @@ matrix:
       python: 3.4
       script:
       - >
-        docker run --volume=$(pwd):/coala coala/base:pre /bin/sh -c "
+        docker run --volume=$(pwd):/coala coala/base:0.11 /bin/sh -c "
           set -e -x
           pip3 install -U /coala/;
           cd /coala-bears;
