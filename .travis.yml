@@ -48,6 +48,8 @@ before_install:
   - cp requirements.txt requirements.orig
   - cat test-requirements.txt docs-requirements.txt >> requirements.txt
   - sed -i.bak '/^-r/d' requirements.txt
+  # Force the minimum version is installed
+  - sed -i.bak 's/~=/==/g' requirements.txt
 
   # OSX is not a real Travis 'python' image, so it does not install
   # requirements.txt automatically.
