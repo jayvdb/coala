@@ -32,5 +32,6 @@ docker run -t -i --volume="$(pwd):/coala" "$IMAGE_NAME" /bin/sh -c "
   cd /coala-bears;
   git pull;
   python3 setup.py install;
+  python3 -c 'import bears.markdown.MarkdownBear as b1; print(len(open(b1.__file__).readlines()))';
   /coala/pytest.sh;
 "
