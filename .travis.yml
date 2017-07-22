@@ -19,7 +19,7 @@ matrix:
 cache:
   pip: true
   directories:
-    - node_modules
+    - $HOME/.nvm
     - docs/_build
 
 addons:
@@ -54,7 +54,7 @@ before_install:
   - if [[ $TRAVIS_OS_NAME == osx ]]; then pip install -r requirements.txt; fi
 
   # For bears in .coafile requiring npm dependencies
-  - npm install
+  - npm install -g 'csslint@~1'
 
 before_script:
   # Restore the original requirements.txt
