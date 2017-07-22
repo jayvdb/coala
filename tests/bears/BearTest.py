@@ -10,7 +10,7 @@ from freezegun import freeze_time
 
 import requests
 import requests_mock
-import urllib3
+from requests.models import ProtocolError
 
 from coalib.bearlib.aspects.collections import AspectList
 from coalib.bearlib.aspects.Metadata import CommitMessage
@@ -371,8 +371,9 @@ class BearDownloadTest(BearTestBase):
     def test_read_broken(self):
         exc = (
             requests.exceptions.RequestException,
-            urllib3.exceptions.ProtocolError,
+            ProtocolError,
         )
+
         fake_content = [b'Fake read data', b'Another line']
         fake_content_provider = BrokenReadHTTPResponse(fake_content)
 
