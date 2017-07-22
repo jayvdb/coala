@@ -56,6 +56,7 @@ before_install:
   # For bears in .coafile requiring npm dependencies
   - npm install -g 'csslint@~1'
 
+
 before_script:
   # Restore the original requirements.txt
   - mv requirements.orig requirements.txt
