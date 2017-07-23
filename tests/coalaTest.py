@@ -151,8 +151,25 @@ class coalaTest(unittest.TestCase):
                 coala.main, 'coala', '-B', '-I', debug=debug)
             self.assertEqual(retval, 0)
             # 8 bears plus 1 line holding the closing colour escape sequence.
-            self.assertEqual(len(stdout.strip().splitlines()), 14)
+            bear_list = stdout.strip().splitlines()
             self.assertFalse(stderr)
+            self.assertEqual(
+                bear_list,
+                ['\x1b[34mDependentBear',
+                 '\x1b[0m\x1b[34mEchoBear',
+                 '\x1b[0m\x1b[34mErrorTestBear',
+                 '\x1b[0m\x1b[34mJavaTestBear',
+                 '\x1b[0m\x1b[34mLineCountTestBear',
+                 '\x1b[0m\x1b[34mRaiseTestBear',
+                 '\x1b[0m\x1b[34mSpaceConsistencyTestBear',
+                 '\x1b[0m\x1b[34mTestBear',
+                 '\x1b[0m\x1b[34mTestDepBearA',
+                 '\x1b[0m\x1b[34mTestDepBearAA',
+                 '\x1b[0m\x1b[34mTestDepBearBDependsA',
+                 '\x1b[0m\x1b[34mTestDepBearCDependsB',
+                 '\x1b[0m\x1b[34mTestDepBearDependsAAndAA',
+                 '\x1b[0m'],
+            )
 
     def test_show_all_bears_debug(self):
         return self.test_show_all_bears(debug=True)
