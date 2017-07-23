@@ -373,6 +373,8 @@ class ConfigurationGatheringCollectionTest(unittest.TestCase):
             local_bears, global_bears = get_filtered_bears(
                 ['Java'], self.log_printer)
 
+        assert False
+
         expected = [
             "<class 'JavaTestBear.JavaTestBear'>",
             "<class 'LineCountTestBear.LineCountTestBear'>",
