@@ -389,6 +389,10 @@ class ConfigurationGatheringCollectionTest(unittest.TestCase):
             [str(bear) for bear in local_bears['cli']],
             expected)
 
+        self.assertEqual(
+            [str(bear) for bear in local_bears['cli']],
+            expected)
+
         with bear_test_module():
             local_bears, global_bears = get_filtered_bears(
                 ['Java'], self.log_printer)
