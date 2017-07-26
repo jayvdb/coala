@@ -370,19 +370,20 @@ class ConfigurationGatheringCollectionTest(unittest.TestCase):
         self.assertEqual(len(local_bears['cli']), TEST_BEARS_COUNT)
 
         expected = [
-            "<class 'TestBear.TestBear'>",
-            "<class 'JavaTestBear.JavaTestBear'>",
+            "<class 'AspectTestBear.AspectTestBear'>",
             "<ErrorTestBear linter class (wrapping 'I_do_not_exist')>",
-            "<class 'SpaceConsistencyTestBear.SpaceConsistencyTestBear'>",
-            "<class 'DependentBear.DependentBear'>",
+            "<class 'JavaTestBear.JavaTestBear'>",
+            "<class 'LineCountTestBear.LineCountTestBear'>",
+            "<EchoBear linter class (wrapping 'echo')>",
+            "<class 'RaiseTestBear.RaiseTestBear'>",
+            "<class 'TestBear.TestBear'>",
             "<class 'TestBearDep.TestDepBearA'>",
             "<class 'TestBearDep.TestDepBearAA'>",
             "<class 'TestBearDep.TestDepBearBDependsA'>",
             "<class 'TestBearDep.TestDepBearCDependsB'>",
             "<class 'TestBearDep.TestDepBearDependsAAndAA'>",
-            "<class 'LineCountTestBear.LineCountTestBear'>",
-            "<class 'RaiseTestBear.RaiseTestBear'>",
-            "<EchoBear linter class (wrapping 'echo')>",
+            "<class 'DependentBear.DependentBear'>",
+            "<class 'SpaceConsistencyTestBear.SpaceConsistencyTestBear'>",
         ]
 
         self.assertCountEqual(
