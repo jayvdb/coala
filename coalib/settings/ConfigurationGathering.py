@@ -364,7 +364,6 @@ def get_filtered_bears(languages, log_printer, arg_parser=None):
                         and global bears.
     """
     local_bears, global_bears = get_all_bears(log_printer, arg_parser)
-    print('bears', local_bears)
     if languages:
         local_bears = filter_section_bears_by_languages(
             local_bears, languages)

@@ -266,10 +266,10 @@ def _iter_relative_dirs(dirname):
         files_or_dirs = os.listdir(dirname)
     except os.error:
         return
-    for file_or_dir in sorted(files_or_dirs):
+    for file_or_dir in files_or_dirs:
         yield file_or_dir
         path = os.path.join(dirname, file_or_dir)
-        for sub_file_or_dir in sorted(_iter_relative_dirs(path)):
+        for sub_file_or_dir in _iter_relative_dirs(path):
             yield os.path.join(file_or_dir, sub_file_or_dir)
 
 
