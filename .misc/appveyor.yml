@@ -50,5 +50,3 @@ on_success:
 on_failure:
   - codecov
 
-matrix:
-  fast_finish: true
