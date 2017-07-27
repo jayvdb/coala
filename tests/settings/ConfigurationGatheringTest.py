@@ -386,7 +386,7 @@ class ConfigurationGatheringCollectionTest(unittest.TestCase):
             "<class 'LineCountTestBear.LineCountTestBear'>",
         ]
 
-        self.assertCountEqual(
+        self.assertEqual(
             [str(bear) for bear in local_bears['cli']],
             expected)
         self.assertEqual(len(global_bears['cli']), 0)
