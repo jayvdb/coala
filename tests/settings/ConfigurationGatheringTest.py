@@ -23,7 +23,11 @@ from coalib.settings.ConfigurationGathering import (
     load_configuration,
 )
 
-from tests.TestUtilities import bear_test_module, TEST_BEARS_COUNT
+from tests.TestUtilities import (
+    bear_test_module,
+    TEST_BEARS_COUNT,
+    TEST_BEAR_NAMES,
+)
 
 
 @pytest.mark.usefixtures('disable_bears')
@@ -369,30 +373,9 @@ class ConfigurationGatheringCollectionTest(unittest.TestCase):
 
         self.assertEqual(len(local_bears['cli']), TEST_BEARS_COUNT)
 
-        expected = [
-            "<class 'AspectTestBear.AspectTestBear'>",
-            "<ErrorTestBear linter class (wrapping 'I_do_not_exist')>",
-            "<class 'JavaTestBear.JavaTestBear'>",
-            "<class 'LineCountTestBear.LineCountTestBear'>",
-            "<EchoBear linter class (wrapping 'echo')>",
-            "<class 'RaiseTestBear.RaiseTestBear'>",
-            "<class 'TestBear.TestBear'>",
-            "<class 'TestBearDep.TestDepBearA'>",
-            "<class 'TestBearDep.TestDepBearAA'>",
-            "<class 'TestBearDep.TestDepBearBDependsA'>",
-            "<class 'TestBearDep.TestDepBearCDependsB'>",
-            "<class 'TestBearDep.TestDepBearDependsAAndAA'>",
-            "<class 'DependentBear.DependentBear'>",
-            "<class 'SpaceConsistencyTestBear.SpaceConsistencyTestBear'>",
-        ]
-
-        self.assertCountEqual(
-            [str(bear) for bear in local_bears['cli']],
-            expected)
-
         self.assertEqual(
             [str(bear) for bear in local_bears['cli']],
-            expected)
+            TEST_BEAR_NAMES)
 
         with bear_test_module():
             local_bears, global_bears = get_filtered_bears(
