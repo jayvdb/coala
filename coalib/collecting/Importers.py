@@ -3,6 +3,7 @@ from importlib.util import spec_from_file_location
 import inspect
 import os
 import platform
+import sys
 
 from coala_utils.ContextManagers import suppress_stdout
 from coala_utils.decorators import arguments_to_lists, yield_once
@@ -16,7 +17,15 @@ def _import_module(file_path):
         raise ImportError("can's import non-existing file %s"
                           % repr(file_path))
 
+    module_dir = os.path.dirname(file_path)
+
+    if module_dir not in sys.path:
+        sys.path.insert(0, module_dir)
+
     module_name = os.path.splitext(os.path.basename(file_path))[0]
+    if module_name in sys.modules:
+        return sys.modules[module_name]
+
     spec = spec_from_file_location(module_name, file_path)
     if not spec:
         raise ImportError("%s doesn't seem to be a python module"
@@ -24,6 +33,7 @@ def _import_module(file_path):
 
     module = module_from_spec(spec)
     spec.loader.exec_module(module)
+    sys.modules[module_name] = module
     return module
 
 
