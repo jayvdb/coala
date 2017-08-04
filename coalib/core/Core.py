@@ -197,8 +197,8 @@ class Session:
         # FIXME   coala with less cores, or to schedule jobs on distributed
         # FIXME   systems (for example Mesos).
 
-        self._schedule_bears(self.bears_to_schedule)
         try:
+            self._schedule_bears(self.bears_to_schedule)
             self.event_loop.run_forever()
         finally:
             self.event_loop.close()
@@ -266,6 +266,9 @@ class Session:
             # Check the DependencyTracker additionally for remaining
             # dependencies.
             resolved = self.dependency_tracker.are_dependencies_resolved
+
+            self.event_loop.close()
+
             if not resolved:
                 raise RuntimeError(  # Unreachable code
                     'Core finished with run, but it seems some dependencies '
@@ -274,7 +277,6 @@ class Session:
                         repr(dependant) + ' depends on ' + repr(dependency)
                         for dependency, dependant in self.dependency_tracker)))
 
-            self.event_loop.stop()
 
     def _finish_task(self, bear, task):
         """
