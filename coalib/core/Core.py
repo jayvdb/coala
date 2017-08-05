@@ -267,7 +267,7 @@ class Session:
             # dependencies.
             resolved = self.dependency_tracker.are_dependencies_resolved
 
-            self.event_loop.close()
+            self.event_loop.stop()
 
             if not resolved:
                 raise RuntimeError(  # Unreachable code
@@ -276,7 +276,6 @@ class Session:
                     'Please report it to the developers.'.format(', '.join(
                         repr(dependant) + ' depends on ' + repr(dependency)
                         for dependency, dependant in self.dependency_tracker)))
-
 
     def _finish_task(self, bear, task):
         """
