@@ -7,6 +7,7 @@ import logging
 
 from pyprint.ConsolePrinter import ConsolePrinter
 
+from loggingtestcase import LoggingTestCase
 from testfixtures import LogCapture, StringComparison
 
 from coalib.bearlib.spacing.SpacingHelper import SpacingHelper
@@ -14,7 +15,6 @@ from coalib.bears.Bear import Bear
 from coalib import coala
 from coala_utils.ContextManagers import (
     make_temp, retrieve_stdout, simulate_console_inputs)
-from coala_utils.decorators import check_logs
 from coalib.output.ConsoleInteraction import (
     acquire_actions_and_apply, acquire_settings, get_action_info, nothing_done,
     print_affected_files, print_result, print_results,
@@ -865,26 +865,26 @@ some_file
                 stdout.getvalue())
 
 
-class ShowBearsTest(unittest.TestCase):
+class ShowBearsTest(LoggingTestCase):
 
     def setUp(self):
         self.console_printer = ConsolePrinter(print_colored=False)
+        super().setUp()
 
-    deprecation_messages = [('root',
-                             'WARNING',
-                             'show_description parameter is deprecated'),
-                            ('root',
-                             'WARNING',
-                             'show_params parameter is deprecated')]
+    deprecation_messages = [
+        'WARNING:root:show_description parameter is deprecated',
+        'WARNING:root:show_params parameter is deprecated',
+    ]
 
-    @check_logs(*deprecation_messages)
     def test_show_bear_minimal(self):
         with retrieve_stdout() as stdout:
             show_bear(
                 SomelocalBear, False, False, self.console_printer)
             self.assertEqual(stdout.getvalue(), 'SomelocalBear\n')
 
-    @check_logs(*deprecation_messages)
+        self.assertEqual(self.captured_logs.output,
+                         self.deprecation_messages)
+
     def test_show_bear_desc_only(self):
         with retrieve_stdout() as stdout:
             show_bear(
@@ -893,7 +893,9 @@ class ShowBearsTest(unittest.TestCase):
                 stdout.getvalue(),
                 'SomelocalBear\n  Some local-bear Description.\n\n')
 
-    @check_logs(*deprecation_messages)
+        self.assertEqual(self.captured_logs.output,
+                         self.deprecation_messages)
+
     def test_show_bear_details_only(self):
         with retrieve_stdout() as stdout:
             show_bear(
@@ -911,7 +913,9 @@ class ShowBearsTest(unittest.TestCase):
                              'can fix.\n\n  Path:\n   ' +
                              repr(SomelocalBear.source_location) + '\n\n')
 
-    @check_logs(*deprecation_messages)
+        self.assertEqual(self.captured_logs.output,
+                         self.deprecation_messages)
+
     def test_show_bear_long_without_content(self):
         with retrieve_stdout() as stdout:
             show_bear(
@@ -930,7 +934,9 @@ class ShowBearsTest(unittest.TestCase):
                              'can fix.\n\n  Path:\n   ' +
                              repr(SomelocalBear.source_location) + '\n\n')
 
-    @check_logs(*deprecation_messages)
+        self.assertEqual(self.captured_logs.output,
+                         self.deprecation_messages)
+
     def test_show_bear_with_content(self):
         with retrieve_stdout() as stdout:
             show_bear(TestBear, True, True, self.console_printer)
@@ -950,7 +956,9 @@ class ShowBearsTest(unittest.TestCase):
                              '  Can fix:\n   * Formatting\n\n  Path:\n   ' +
                              repr(TestBear.source_location) + '\n\n')
 
-    @check_logs(*deprecation_messages)
+        self.assertEqual(self.captured_logs.output,
+                         self.deprecation_messages)
+
     def test_show_bear_settings_only(self):
         with retrieve_stdout() as stdout:
             args = default_arg_parser().parse_args(['--show-settings'])
@@ -963,20 +971,26 @@ class ShowBearsTest(unittest.TestCase):
                              '   * setting2: Optional Setting. ('
                              "Optional, defaults to 'None'.)\n\n")
 
-    @check_logs(*deprecation_messages)
+        self.assertEqual(self.captured_logs.output,
+                         self.deprecation_messages)
+
     def test_show_bears_empty(self):
         with retrieve_stdout() as stdout:
             show_bears({}, {}, True, True, self.console_printer)
             self.assertIn('No bears to show.', stdout.getvalue())
 
-    @check_logs(*deprecation_messages)
+        self.assertEqual(self.captured_logs.output,
+                         self.deprecation_messages)
+
     def test_show_bears_with_json(self):
         args = default_arg_parser().parse_args(['--json'])
         with retrieve_stdout() as stdout:
             show_bears({}, {}, True, True, self.console_printer, args)
             self.assertEqual('{\n  "bears": []\n}\n', stdout.getvalue())
 
-    @check_logs(*deprecation_messages)
+        self.assertEqual(self.captured_logs.output,
+                         self.deprecation_messages)
+
     @patch('coalib.output.ConsoleInteraction.show_bear')
     def test_show_bears(self, show_bear):
         local_bears = OrderedDict([('default', [SomelocalBear]),
@@ -988,7 +1002,9 @@ class ShowBearsTest(unittest.TestCase):
                                           self.console_printer,
                                           None)
 
-    @check_logs(*(deprecation_messages*5))
+        self.assertEqual(self.captured_logs.output,
+                         self.deprecation_messages)
+
     def test_show_bears_sorted(self):
         local_bears = OrderedDict([('default', [SomelocalBear]),
                                    ('test', [aSomelocalBear])])
@@ -1003,6 +1019,9 @@ class ShowBearsTest(unittest.TestCase):
                              'BSomeglobalBear\n'
                              'SomeglobalBear\n'
                              'SomelocalBear\n')
+
+        self.assertEqual(self.captured_logs.output,
+                         self.deprecation_messages*5)
 
     def test_show_bears_capabilities(self):
         with retrieve_stdout() as stdout:
