@@ -71,7 +71,7 @@ before_script:
   - git clone https://gitlab.com/coala/mobans ../coala-mobans
     --branch=test-requirements
   - moban
-  - git diff --exit-code
+  - git diff
 
 script:
   - py.test
