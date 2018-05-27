@@ -79,8 +79,6 @@ script:
       sed -i.bak '/bears = GitCommitBear/d' .coafile
     fi
   - coala --non-interactive
-  - python setup.py install
-  - python setup.py docs
 
 after_success:
   - codecov
