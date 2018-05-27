@@ -35,6 +35,10 @@ dependencies:
   - testfixtures~=5.3.1
   - unidiff~=0.5.2
 
+test_dependencies:
+  - argcomplete~=1.8
+  - freezegun~=0.3.9
+
 configuration:
   template_dir:
     - .moban.dt/
@@ -46,6 +50,7 @@ configuration:
 targets:
   - setup.py: core-setup.py.jj2
   - requirements.txt: requirements.txt.jj2
+  - test-requirements.txt: test-requirements.txt.jj2
   - coalib/VERSION: VERSION.jj2
   - runtime.txt: runtime.txt
   - netlify.toml: docs/netlify.toml
