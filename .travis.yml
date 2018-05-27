@@ -69,6 +69,7 @@ before_script:
   - python .misc/check_setuptools.py
   - git clone https://github.com/moremoban/setupmobans ../setupmobans
   - git clone https://gitlab.com/coala/mobans ../coala-mobans
+    --branch=test-requirements
   - moban
   - git diff --exit-code
 
