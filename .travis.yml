@@ -21,10 +21,18 @@ jobs:
       env: UNSUPPORTED=true
       script: .misc/check_unsupported.sh
       if: branch = master AND type = push
+    - python: 3.6
+      env: MOBAN=true
+      script:
+        - git clone https://gitlab.com/coala/mobans
+                    --branch=$MOBAN_BRANCH ../coala-mobans
+        - moban
+        - git diff --exit-code
 
 env:
   global:
     - PATH="$PATH:$TRAVIS_BUILD_DIR/node_modules/.bin"
+    - MOBAN_BRANCH=master
 
 cache:
   pip: true
@@ -67,10 +75,6 @@ before_script:
   # Restore the original requirements.txt
   - mv requirements.orig requirements.txt
   - python .misc/check_setuptools.py
-  - git clone https://github.com/moremoban/setupmobans ../setupmobans
-  - git clone https://gitlab.com/coala/mobans ../coala-mobans
-  - moban
-  - git diff --exit-code
 
 script:
   - py.test
