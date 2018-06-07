@@ -73,6 +73,8 @@ before_script:
 
 stage: test
 script:
+  - git log -1 --pretty=%B
+  - exit
   - py.test
   - python setup.py bdist_wheel
   - pip install ./dist/coala-*.whl
