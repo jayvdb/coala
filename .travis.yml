@@ -7,8 +7,6 @@ python:
 
 stages:
   - test
-  - name: moban
-    if: type = pull_request OR branch != master
   - name: unsupported
     if: branch = master AND type = push
 
@@ -25,9 +23,6 @@ jobs:
     - python: 3.4.3
       stage: unsupported
       script: .misc/check_unsupported.sh
-    - python: 3.6
-      stage: moban
-      script: .misc/check_moban.sh
 
 env:
   global:
