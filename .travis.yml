@@ -63,7 +63,8 @@ before_install:
   - if [[ $TRAVIS_OS_NAME == osx ]]; then pip install -r requirements.txt; fi
 
   # For bears in .coafile requiring npm dependencies
-  - npm install --no-save
+  - npm install -g csslint
+  - apt-get -y install shellcheck
 
 before_script:
   # Restore the original requirements.txt
