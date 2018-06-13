@@ -79,11 +79,11 @@ before_install:
   # https://github.com/coala/coala/issues/3183
   # Travis automatically installs the `requirements.txt` in "install" stage
   - cp requirements.txt requirements.orig
-  - printf '%s\n%s\n'
-           "$(cat test-requirements.txt docs-requirements.txt)"
+  - printf '%s\n%s\n%s\n'
+           "$(cat test-requirements.txt)"
+           "$(grep -v '^-r' docs-requirements.txt)"
            "$(cat requirements.txt)"
            > requirements.txt
-  - sed -i.bak '/^-r/d' requirements.txt
 
   # OSX is not a real Travis 'python' image, so it does not install
   # requirements.txt automatically.
