@@ -82,7 +82,8 @@ before_install:
   - printf '%s\n%s\n'
            "$(cat test-requirements.txt docs-requirements.txt)"
            "$(cat requirements.txt)"
-           | grep -v '^-r' > requirements.txt
+           > requirements.txt
+  - sed -i.bak '/^-r/d' requirements.txt
 
   # OSX is not a real Travis 'python' image, so it does not install
   # requirements.txt automatically.
