@@ -7,7 +7,12 @@ python:
 stages:
   - name: sentinel
     if: branch != master OR type = pull_request
-  - test
+  - name: test
+    fast_finish: true
+    if: branch != master OR type = pull_request
+  - name: test
+    fast_finish: false
+    if: branch = master AND type = push
   - moban
   - name: unsupported
     if: branch = master AND type = push
@@ -25,11 +30,12 @@ stages:
 
 jobs:
   include:
-    # All other jobs will be cancelled if the sentinel job fails
     - stage: sentinel
       python: 3.6
 
     - stage: test
+      # The sentinel job isnt active on master pushes, so here the
+      # job is re-added to the bottom of the test matrix 
       python: 3.6
       if: branch = master AND type = push
 
