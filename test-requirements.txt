@@ -10,6 +10,7 @@ pytest-cov~=2.4
 pytest-env~=0.6.0
 pytest-error-for-skips~=1.0
 pytest-instafail~=0.3.0
+pytest-leaks~=0.2.2 ; python_version >= '3.5'
 pytest-mock~=1.1
 pytest-reorder~=0.1.0
 pytest-reqs~=0.0.6
