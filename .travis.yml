@@ -29,6 +29,7 @@ stages:
 
 jobs:
   include:
+    # All other jobs will be cancelled if the sentinel job fails
     - stage: sentinel
       # All other jobs will be cancelled if the sentinel job fails
       python: 3.6
