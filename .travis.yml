@@ -51,7 +51,7 @@ jobs:
 
     - stage: test
       # The sentinel job isnt active on master pushes, so here the
-      # job is re-added to the bottom of the test matrix 
+      # job is re-added to the bottom of the test matrix
       python: 3.6
       if: branch = master AND type = push
 
