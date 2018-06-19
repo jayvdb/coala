@@ -34,6 +34,22 @@ jobs:
       python: 3.6
 
     - stage: test
+      python: 3.7-dev
+      if: branch != master OR type = pull_request
+
+    - stage: test
+      python: 3.7-nightly
+      if: branch != master OR type = pull_request
+
+    - stage: test
+      python: 3.6.1
+      if: branch != master OR type = pull_request
+
+    - stage: test
+      python: 3.6.0
+      if: branch != master OR type = pull_request
+
+    - stage: test
       # The sentinel job isnt active on master pushes, so here the
       # job is re-added to the bottom of the test matrix 
       python: 3.6
