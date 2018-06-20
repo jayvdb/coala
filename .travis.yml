@@ -107,14 +107,17 @@ before_script:
   - python .misc/check_setuptools.py
   - if [[ -f $HOME/.build_cache/.fastest.coverage ]]; then
       cp $HOME/.build_cache/.fastest.coverage . ;
+      echo loaded fastest.coverage
       FASTEST_MODE=skip ;
     else
       FASTEST_MODE=gather ;
     fi
 
 script:
+  - echo $TRAVIS_COMMIT_RANGE
   - MASTER_COMMIT=${TRAVIS_COMMIT_RANGE%%..*}
   - echo $MASTER_COMMIT
+  - echo $FASTEST_MODE
   - sed -i.bak '/;/d' test-requirements.txt
   - py.test --fastest-commit=$TRAVIS_COMMIT_RANGE --fastest-mode=$FASTEST_MODE
   - python setup.py bdist_wheel
@@ -131,6 +134,7 @@ script:
 
 before_cache:
   - if [[ -f .fastest.coverage ]]; then
+      echo storing fastest.coverage ;
       cp .fastest.coverage $HOME/.build_cache/ ;
     fi
 
