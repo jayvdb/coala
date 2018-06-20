@@ -35,7 +35,7 @@ class coalaTest(unittest.TestCase):
 
     def test_coala(self):
         with bear_test_module(), \
-                prepare_file(['#fixme'], None) as (lines, filename):
+                prepare_file(['# FIXME'], None) as (lines, filename):
             retval, stdout, stderr = execute_coala(
                              coala.main,
                              'coala', '-c', os.devnull,
