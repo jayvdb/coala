@@ -107,6 +107,7 @@ before_script:
 
 script:
   - MASTER_COMMIT=${TRAVIS_COMMIT_RANGE%%..*}
+  - sed -i.bak '/;/d' test-requirements.txt
   - py.test --fastest-commit=$MASTER_COMMIT
   - python setup.py bdist_wheel
   - pip install ./dist/coala-*.whl
