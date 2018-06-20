@@ -26,7 +26,7 @@ def deprecate_settings(**depr_args):
     warning - but it still works!
 
     >>> import sys
-    >>> logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+    >>> logging.basicConfig(level=logging.DEBUG)
     >>> run(old="Hello world!")
     WARNING:root:The setting `old` is deprecated. Please use `new` instead.
     Hello world!
