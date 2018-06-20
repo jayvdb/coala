@@ -107,13 +107,16 @@ before_script:
   - python .misc/check_setuptools.py
   - if [[ -f $HOME/.build_cache/.fastest.coverage ]]; then
       cp $HOME/.build_cache/.fastest.coverage . ;
+      FASTEST_MODE=skip ;
+    else
+      FASTEST_MODE=gather ;
     fi
 
 script:
   - MASTER_COMMIT=${TRAVIS_COMMIT_RANGE%%..*}
   - echo $MASTER_COMMIT
   - sed -i.bak '/;/d' test-requirements.txt
-  - py.test --fastest-commit=$TRAVIS_COMMIT_RANGE --fastest-mode=skip
+  - py.test --fastest-commit=$TRAVIS_COMMIT_RANGE --fastest-mode=$FASTEST_MODE
   - python setup.py bdist_wheel
   - pip install ./dist/coala-*.whl
   - pip install coala-bears[alldeps] --pre -U
