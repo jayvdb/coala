@@ -68,6 +68,7 @@ cache:
   directories:
     - node_modules
     - docs/_build
+    - $HOME/.build_cache
 
 before_install:
   - if [[ $TRAVIS_OS_NAME == osx ]]; then TRAVIS_PYTHON_VERSION=3.5; fi
@@ -104,6 +105,9 @@ before_script:
   # Restore the original requirements.txt
   - mv requirements.orig requirements.txt
   - python .misc/check_setuptools.py
+  - if [[ -f $HOME/.build_cache/.fastest.coverage ]]; then
+      cp $HOME/.build_cache/.fastest.coverage . ;
+    fi
 
 script:
   - MASTER_COMMIT=${TRAVIS_COMMIT_RANGE%%..*}
@@ -121,6 +125,11 @@ script:
   - coala --non-interactive
   - python setup.py docs
   - .ci/check_man.sh
+
+before_cache:
+  - if [[ -f .fastest.coverage ]]; then
+      cp .fastest.coverage $HOME/.build_cache/ ;
+    fi
 
 after_success:
   - codecov
