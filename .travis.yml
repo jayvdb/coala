@@ -107,8 +107,9 @@ before_script:
 
 script:
   - MASTER_COMMIT=${TRAVIS_COMMIT_RANGE%%..*}
+  - echo $MASTER_COMMIT
   - sed -i.bak '/;/d' test-requirements.txt
-  - py.test --fastest-commit=$MASTER_COMMIT
+  - py.test --fastest-commit=$MASTER_COMMIT --fastest-mode=skip
   - python setup.py bdist_wheel
   - pip install ./dist/coala-*.whl
   - pip install coala-bears[alldeps] --pre -U
