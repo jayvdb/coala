@@ -27,12 +27,12 @@ jobs:
   include:
     - stage: sentinel
       # All other jobs will be cancelled if the sentinel job fails
-      python: 3.7-dev
+      python: 3.6
 
     - stage: test
       # The sentinel job isnt active on master pushes, so the
       # job is re-added to the bottom of the test matrix
-      python: 3.7-dev
+      python: 3.6
       if: branch = master AND type = push
 
     # OSX build removed due to long build startup delays
@@ -107,6 +107,8 @@ before_script:
 
 script:
   - py.test
+  - python setup.py develop
+  - python setup.py install
   - python setup.py bdist_wheel
   - pip install ./dist/coala-*.whl
   - pip install coala-bears[alldeps] --pre -U
