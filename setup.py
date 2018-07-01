@@ -147,12 +147,11 @@ def read_requirements(filename):
             if '+' in line[:4]:
                 repo_link, _, egg_name = line.partition('#egg=')
                 if not egg_name:
-                    raise ValueError('Unknown requirement: {0}'
-                                     .format(line))
+                    egg_name = repo_link.rsplit('/')[1]
 
                 DEPENDENCY_LINKS.append(repo_link)
 
-                line = egg_name.replace('-', '==')
+                line = egg_name  # .replace('-', '==')
 
             data.append(line)
 
