@@ -145,7 +145,7 @@ def read_requirements(filename):
                 continue
 
             if '+' in line[:4]:
-                repo_link, egg_name = line.split('#egg=')
+                repo_link, _, egg_name = line.partition('#egg=')
                 if not egg_name:
                     raise ValueError('Unknown requirement: {0}'
                                      .format(line))
