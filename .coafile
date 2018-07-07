@@ -6,7 +6,8 @@ shellcheck_ignore = SC2046, SC2154
 max_line_length = 80
 use_spaces = True
 
-ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata/*.py,
+ignore = package.json,
+  tests/bearlib/languages/documentation/documentation_extraction_testdata/**,
   tests/collecting/collectors_test_dir/bears/incorrect_bear.py,
   .git/**,
   dist/**,
@@ -29,7 +30,8 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
 files = **
 bears = SpaceConsistencyBear
 
-ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata/*.py,
+ignore = package.json,
+  tests/bearlib/languages/documentation/documentation_extraction_testdata/**,
   tests/collecting/collectors_test_dir/bears/incorrect_bear.py,
   .git/**,
   dist/**,
@@ -59,7 +61,8 @@ preferred_quotation = '
 default_actions = QuotesBear: ApplyPatchAction
 
 # " and ' are not interchangable for shell scripts, C or Java
-ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata/*.py,
+ignore = package.json,
+  tests/bearlib/languages/documentation/documentation_extraction_testdata/**,
   tests/collecting/collectors_test_dir/bears/incorrect_bear.py,
   .git/**,
   dist/**,
@@ -87,12 +90,15 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
   **.java,
   **.md,
   **.xml,
+  **.svg,
   **.html,
   **.less,
+  **.rst,
   LICENSE,
   **.toml,  # our netlify.toml should use single quotes
-  .ci/appveyor.yml,  #  our AppVeyor files should use single quotes
-  .ci/run_with_env.cmd,
+  .misc/adjust_version_number.py,
+  .misc/appveyor.yml,  #  our AppVeyor files should use single quotes
+  .misc/run_with_env.cmd,
   .gitignore,
   .coafile
 

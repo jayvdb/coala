@@ -47,7 +47,8 @@ coafile_global:
   shellcheck_ignore: SC2046, SC2154
 
 coafile_global_ignore:
-  - tests/bearlib/languages/documentation/documentation_extraction_testdata/*.py
+  - package.json
+  - tests/bearlib/languages/documentation/documentation_extraction_testdata/**
   - tests/collecting/collectors_test_dir/bears/incorrect_bear.py
 
 coafile_whitespace_ignore:
