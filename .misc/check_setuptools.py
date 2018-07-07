@@ -31,6 +31,7 @@ def check_setuptools_version(version):
               file=sys.stderr)
         return 3
 
+
 if __name__ == '__main__':
     version = None
     try:
