@@ -52,6 +52,7 @@ ignore = package.json,
   docs/_build/**,
   docs/make.bat,
   docs/API/**,
+  **.bat,
   **/Makefile*
 
 [all.quotes]
@@ -86,7 +87,10 @@ ignore = package.json,
   docs/API/**,
   **.rst,
   **.coalang,
+  **.ps1,
+  **.jj2,
   **.sh,
+  **.bat,
   **/Makefile*,
   Dockerfile,
   **.c,
