@@ -18,7 +18,11 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
   .env/**,
   .tox/**,
   prof/**,
-  docs/_build/html/**
+  .pytest_cache/**,
+  **/__pycache__/**,
+  coala.egg-info/**,
+  docs/_build/html/**,
+  docs/make.bat
 
 [all.whitespace]
 files = **
@@ -36,7 +40,11 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
   .env/**,
   .tox/**,
   prof/**,
+  .pytest_cache/**,
+  **/__pycache__/**,
+  coala.egg-info/**,
   docs/_build/html/**,
+  docs/make.bat,
   docs/API/**,
   **/Makefile*
 
@@ -61,7 +69,11 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
   .env/**,
   .tox/**,
   prof/**,
+  .pytest_cache/**,
+  **/__pycache__/**,
+  coala.egg-info/**,
   docs/_build/html/**,
+  docs/make.bat,
   docs/API/**,
   **.sh,
   **/Makefile*,
