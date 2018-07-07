@@ -46,6 +46,9 @@ coafile_global:
   pycodestyle_ignore: E303, E121, E123, E126, E133, E226, E242, E704, W503, W504
   shellcheck_ignore: SC2046, SC2154
 
+coafile_disable:
+  - whitespace
+
 coafile_global_ignore:
   - package.json
   - package-lock.json
