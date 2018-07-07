@@ -48,11 +48,12 @@ coafile_global:
 
 coafile_disable:
   - whitespace
-  - quotes
 
 coafile_global_ignore:
   - package.json
   - package-lock.json
+  - .editorconfig
+  - coala.1
   - '**/*test_files/**'
   - tests/bearlib/languages/documentation/documentation_extraction_testdata/**
   - tests/collecting/collectors_test_dir/bears/incorrect_bear.py
@@ -65,6 +66,11 @@ coafile_quotes_ignore:
   - 'docs/API/**'
   - '**.rst'
   - '**.coalang'
+  - runtime.txt
+  - setup.cfg
+  - MANIFEST.in
+  - 'docs/**'
+  - 'tests/**'
 
 configuration:
   template_dir:
