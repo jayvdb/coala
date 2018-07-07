@@ -1,6 +1,8 @@
 {
   "name": "coala",
   "dependencies": {
-    "csslint": "~1"
+    "csslint": "~1",
+    "remark-cli": "~2",
+    "remark-lint": "~5"
   }
 }
