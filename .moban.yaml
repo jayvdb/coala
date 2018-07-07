@@ -55,6 +55,7 @@ coafile_global_ignore:
 
 coafile_whitespace_ignore:
   - 'docs/API/**'
+  - 'tests/**'
 
 coafile_quotes_ignore:
   - 'docs/API/**'

@@ -54,6 +54,7 @@ ignore = package.json,
   docs/_build/**,
   docs/make.bat,
   docs/API/**,
+  tests/**,
   **.bat,
   **/Makefile*
 
