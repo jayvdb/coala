@@ -49,6 +49,7 @@ coafile_global:
 coafile_global_ignore:
   - package.json
   - package-lock.json
+  - '**/*test_files/**'
   - tests/bearlib/languages/documentation/documentation_extraction_testdata/**
   - tests/collecting/collectors_test_dir/bears/incorrect_bear.py
 

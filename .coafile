@@ -8,6 +8,7 @@ use_spaces = True
 
 ignore = package.json,
   package-lock.json,
+  **/*test_files/**,
   tests/bearlib/languages/documentation/documentation_extraction_testdata/**,
   tests/collecting/collectors_test_dir/bears/incorrect_bear.py,
   .git/**,
@@ -33,6 +34,7 @@ bears = SpaceConsistencyBear
 
 ignore = package.json,
   package-lock.json,
+  **/*test_files/**,
   tests/bearlib/languages/documentation/documentation_extraction_testdata/**,
   tests/collecting/collectors_test_dir/bears/incorrect_bear.py,
   .git/**,
@@ -66,6 +68,7 @@ default_actions = QuotesBear: ApplyPatchAction
 # " and ' are not interchangable for shell scripts, C or Java
 ignore = package.json,
   package-lock.json,
+  **/*test_files/**,
   tests/bearlib/languages/documentation/documentation_extraction_testdata/**,
   tests/collecting/collectors_test_dir/bears/incorrect_bear.py,
   .git/**,
@@ -88,6 +91,7 @@ ignore = package.json,
   **.rst,
   **.coalang,
   **.ps1,
+  **.cmd,
   **.jj2,
   **.sh,
   **.bat,
@@ -109,6 +113,7 @@ ignore = package.json,
   .misc/appveyor.yml,  #  our AppVeyor files should use single quotes
   .misc/run_with_env.cmd,
   .circleci/config.yml,
+  .travis.yml,
   .gitignore,
   .coafile
 
