@@ -38,16 +38,16 @@ stages:
 jobs:
   include:
     - stage: sentinel
-      # All other jobs will be cancelled if the sentinel job fails
-      python: 3.6
-
-    - stage: sentinel
       <<: *disable_global
       python: 3.6
       install:
-        - pip install ".[alldeps]"
+        - pip install "coala-bears[alldeps]"
         - npm install
       script: coala --non-interactive -V
+
+    - stage: sentinel
+      # All other jobs will be cancelled if the sentinel job fails
+      python: 3.6
 
     - stage: test
       # The sentinel job isnt active on master pushes, so the
