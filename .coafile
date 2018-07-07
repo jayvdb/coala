@@ -20,8 +20,8 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
   prof/**,
   .pytest_cache/**,
   **/__pycache__/**,
-  coala.egg-info/**,
-  docs/_build/html/**,
+  *.egg-info/**,
+  docs/_build/**,
   docs/make.bat
 
 [all.whitespace]
@@ -42,8 +42,8 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
   prof/**,
   .pytest_cache/**,
   **/__pycache__/**,
-  coala.egg-info/**,
-  docs/_build/html/**,
+  *.egg-info/**,
+  docs/_build/**,
   docs/make.bat,
   docs/API/**,
   **/Makefile*
@@ -71,8 +71,8 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
   prof/**,
   .pytest_cache/**,
   **/__pycache__/**,
-  coala.egg-info/**,
-  docs/_build/html/**,
+  *.egg-info/**,
+  docs/_build/**,
   docs/make.bat,
   docs/API/**,
   **.sh,
