@@ -55,6 +55,7 @@ coafile_whitespace_ignore:
 
 coafile_quotes_ignore:
   - 'docs/API/**'
+  - '**.rst'
 
 configuration:
   template_dir:
