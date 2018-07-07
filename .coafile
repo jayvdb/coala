@@ -16,7 +16,8 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
   env/**,
   venv/**,
   .env/**,
-  .tox/**
+  .tox/**,
+  docs/_build/html/**
 
 [all.whitespace]
 files = **
@@ -33,6 +34,7 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
   venv/**,
   .env/**,
   .tox/**,
+  docs/_build/html/**,
   docs/API/**,
   **/Makefile*
 
@@ -56,6 +58,7 @@ ignore = tests/bearlib/languages/documentation/documentation_extraction_testdata
   venv/**,
   .env/**,
   .tox/**,
+  docs/_build/html/**,
   docs/API/**,
   **.sh,
   **/Makefile*,
