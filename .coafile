@@ -7,6 +7,7 @@ max_line_length = 80
 use_spaces = True
 
 ignore = package.json,
+  package-lock.json,
   tests/bearlib/languages/documentation/documentation_extraction_testdata/**,
   tests/collecting/collectors_test_dir/bears/incorrect_bear.py,
   .git/**,
@@ -31,6 +32,7 @@ files = **
 bears = SpaceConsistencyBear
 
 ignore = package.json,
+  package-lock.json,
   tests/bearlib/languages/documentation/documentation_extraction_testdata/**,
   tests/collecting/collectors_test_dir/bears/incorrect_bear.py,
   .git/**,
@@ -62,6 +64,7 @@ default_actions = QuotesBear: ApplyPatchAction
 
 # " and ' are not interchangable for shell scripts, C or Java
 ignore = package.json,
+  package-lock.json,
   tests/bearlib/languages/documentation/documentation_extraction_testdata/**,
   tests/collecting/collectors_test_dir/bears/incorrect_bear.py,
   .git/**,
@@ -82,6 +85,7 @@ ignore = package.json,
   docs/make.bat,
   docs/API/**,
   **.rst,
+  **.coalang,
   **.sh,
   **/Makefile*,
   Dockerfile,
@@ -95,10 +99,12 @@ ignore = package.json,
   **.less,
   **.rst,
   LICENSE,
+  ISSUE_TEMPLATE,
   **.toml,  # our netlify.toml should use single quotes
   .misc/adjust_version_number.py,
   .misc/appveyor.yml,  #  our AppVeyor files should use single quotes
   .misc/run_with_env.cmd,
+  .circleci/config.yml,
   .gitignore,
   .coafile
 

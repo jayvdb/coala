@@ -48,6 +48,7 @@ coafile_global:
 
 coafile_global_ignore:
   - package.json
+  - package-lock.json
   - tests/bearlib/languages/documentation/documentation_extraction_testdata/**
   - tests/collecting/collectors_test_dir/bears/incorrect_bear.py
 
@@ -57,6 +58,7 @@ coafile_whitespace_ignore:
 coafile_quotes_ignore:
   - 'docs/API/**'
   - '**.rst'
+  - '**.coalang'
 
 configuration:
   template_dir:
