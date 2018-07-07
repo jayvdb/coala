@@ -42,6 +42,20 @@ dependencies:
 gitignore_extra_rulesets:
   - node
 
+coafile_global:
+  pycodestyle_ignore: E303, E121, E123, E126, E133, E226, E242, E704, W503, W504
+  shellcheck_ignore: SC2046, SC2154
+
+coafile_global_ignore:
+  - tests/bearlib/languages/documentation/documentation_extraction_testdata/*.py
+  - tests/collecting/collectors_test_dir/bears/incorrect_bear.py
+
+coafile_whitespace_ignore:
+  - 'docs/API/**'
+
+coafile_quotes_ignore:
+  - 'docs/API/**'
+
 configuration:
   template_dir:
     - .moban.dt/
@@ -50,6 +64,7 @@ configuration:
   configuration: .moban.yaml
   configuration_dir: ../coala-mobans/
 targets:
+  - .coafile: coafile.jj2
   - .gitignore: core-gitignore.jj2
   - setup.py: core-setup.py.jj2
   - requirements.txt: requirements.txt.jj2
