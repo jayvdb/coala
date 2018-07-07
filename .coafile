@@ -29,65 +29,6 @@ ignore = package.json,
   docs/make.bat
 
 
-[all.quotes]
-files = **
-bears = QuotesBear
-
-preferred_quotation = '
-
-default_actions = QuotesBear: ApplyPatchAction
-
-# " and ' are not interchangable for shell scripts, C or Java
-ignore = package.json,
-  package-lock.json,
-  **/*test_files/**,
-  tests/bearlib/languages/documentation/documentation_extraction_testdata/**,
-  tests/collecting/collectors_test_dir/bears/incorrect_bear.py,
-  .git/**,
-  dist/**,
-  tmp/**,
-  vendor/**,
-  node_modules/**,
-  env/**,
-  venv/**,
-  .env/**,
-  .tox/**,
-  prof/**,
-  .pytest_cache/**,
-  **/__pycache__/**,
-  .coverage,
-  *.egg-info/**,
-  docs/_build/**,
-  docs/make.bat,
-  docs/API/**,
-  **.rst,
-  **.coalang,
-  **.ps1,
-  **.cmd,
-  **.jj2,
-  **.sh,
-  **.bat,
-  **/Makefile*,
-  Dockerfile,
-  **.c,
-  **.h,
-  **.java,
-  **.md,
-  **.xml,
-  **.svg,
-  **.html,
-  **.less,
-  **.rst,
-  LICENSE,
-  ISSUE_TEMPLATE,
-  **.toml,  # our netlify.toml should use single quotes
-  .misc/adjust_version_number.py,
-  .misc/appveyor.yml,  #  our AppVeyor files should use single quotes
-  .misc/run_with_env.cmd,
-  .circleci/config.yml,
-  .travis.yml,
-  .gitignore,
-  .coafile
 
 [all.yaml]
 files = **.yml, **.yaml

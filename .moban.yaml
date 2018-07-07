@@ -48,6 +48,7 @@ coafile_global:
 
 coafile_disable:
   - whitespace
+  - quotes
 
 coafile_global_ignore:
   - package.json
