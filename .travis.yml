@@ -12,6 +12,18 @@ stages:
   - name: unsupported
     if: branch = master AND type = push
 
+.disable_global: &disable_global
+  addons: false
+  cache: pip
+  before_install: false
+  install: false
+  before_script: false
+  script: false
+  after_success: false
+  after_failure: false
+  before_deploy: false
+  deploy: false
+
 .check_moban: &check_moban
   python: 3.6
   stage: moban
