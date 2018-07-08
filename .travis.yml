@@ -134,6 +134,7 @@ script:
   - pip install coala-bears.zip[alldeps] --pre -U
   - ls -ad .*
   - ls -d *
+  - file *
   - coala --non-interactive -V
   - python setup.py docs
   - .ci/check_man.sh

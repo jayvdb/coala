@@ -53,6 +53,7 @@ coafile_global_ignore:
   - package.json
   - package-lock.json
   - .editorconfig
+  - coala
   - coala.1
   - '**/*test_files/**'
   - tests/bearlib/languages/documentation/documentation_extraction_testdata/**
@@ -72,6 +73,47 @@ coafile_quotes_ignore:
   - 'docs/**'
   - 'tests/**'
   - 'coalib/**'
+  - '.circleci/**'
+  - '.coverage'
+  - '.gitignore'
+  - '.moban.yaml'
+  - '.coafile'
+  - '.ci/**'
+  - '.editorconfig'
+  - '.misc/**'
+  - '.pytest_cache/**'
+  - '.codecov.yml'
+  - '.moban.dt/**'
+  - '.travis.yml'
+  - 'build/**'
+  - 'coala'
+  - 'coala/**'
+  - 'ISSUE_TEMPLATE'
+  - 'RELEASE_NOTES.rst'
+  - 'LICENSE'
+  - 'requirements.txt'
+  - 'coala.1'
+  - 'coala.egg-info/**'
+  - 'MANIFEST.in'
+  - 'requirements.txt.bak'
+  - 'coalib/**'
+  - 'netlify.toml'
+  - 'runtime.txt'
+  - 'node_modules/**'
+  - 'setup.cfg'
+  - 'conftest.py'
+  - 'package.json'
+  - 'setup.py'
+  - 'CONTRIBUTING.rst'
+  - 'prof/**'
+  - 'test-requirements.txt'
+  - 'docs-requirements.txt'
+  - 'dist/**'
+  - 'docs/**'
+  - '__pycache__/**'
+  - 'PULL_REQUEST_TEMPLATE.md'
+  - 'tests/**'
+  - 'README.rst'
 
 configuration:
   template_dir:
