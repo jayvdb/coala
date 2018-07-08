@@ -71,6 +71,7 @@ coafile_quotes_ignore:
   - MANIFEST.in
   - 'docs/**'
   - 'tests/**'
+  - 'coalib/**'
 
 configuration:
   template_dir:
