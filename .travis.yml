@@ -71,6 +71,7 @@ cache:
 
 before_cache:
   - find docs/_build/doctrees/ -name '*.doctree' -delete
+  - find docs/_build/
 
 before_install:
   - if [[ $TRAVIS_OS_NAME == osx ]]; then TRAVIS_PYTHON_VERSION=3.5; fi
