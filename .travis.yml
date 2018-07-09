@@ -70,8 +70,9 @@ cache:
     - docs/_build
 
 before_cache:
-  - find ~/.cache/pip/http
+  - ls ~/.cache/pip
   - rm -rf ~/.cache/pip/http
+  - find ~/.cache/pip
   - find docs/_build/doctrees/ -name '*.doctree' -delete
   - find docs/_build/
 
