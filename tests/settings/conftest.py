@@ -1,6 +1,9 @@
 import pytest
 
-import coalib.collecting.Collectors
+try:
+    import coalib.collecting.Collectors
+except ImportError:
+    coalib = None
 
 
 @pytest.fixture

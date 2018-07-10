@@ -1,7 +1,10 @@
-from coalib.bearlib.aspects import Taste, aspectclass
-from coalib.bearlib.aspects.base import aspectbase
-
 import pytest
+
+try:
+    from coalib.bearlib.aspects import Taste, aspectclass
+    from coalib.bearlib.aspects.base import aspectbase
+except ImportError:
+    coalib = None
 
 
 @pytest.fixture
