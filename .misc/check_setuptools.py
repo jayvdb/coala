@@ -18,15 +18,17 @@ def get_setuptools_version():
 
 
 def check_setuptools_version(version):
+    if '.' in version:
+        version = version.split('.')[0]
     print('Checking setuptools==%s' % version, file=sys.stderr)
-    if setuptools.__version__ != version:
+    if not setuptools.__version__.startswith(version):
         print('Failed! setuptools==%s' % setuptools.__version__,
               file=sys.stderr)
         return 2
 
     pip_list = subprocess.check_output(['pip', 'list', '--format=legacy'])
     pip_list = pip_list.decode('utf8')
-    if 'setuptools (%s)' % version not in pip_list:
+    if 'setuptools (%s.' % version not in pip_list:
         print('Failed! pip list reports wrong setuptools:\n%s' % pip_list,
               file=sys.stderr)
         return 3
