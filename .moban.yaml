@@ -59,3 +59,6 @@ targets:
   - netlify.toml: docs/netlify.toml
   - .misc/appveyor.yml: ci/appveyor.yml.jj2
   - .misc/run_with_env.cmd: run_with_env.cmd
+  - .misc/check_moban.sh: ci/check_moban.sh
+  - .misc/check_setuptools.py: ci/check_setuptools.py
+  - .misc/check_unsupported.sh: ci/check_unsupported.sh
