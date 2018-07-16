@@ -36,7 +36,7 @@ dependencies:
   - Pygments~=2.1
   - PyPrint~=0.2.6
   - requests~=2.12
-  - setuptools>=21.0.0
+  - setuptools>=19.0.0
   - unidiff~=0.5.2
 
 gitignore_extra_rulesets:
