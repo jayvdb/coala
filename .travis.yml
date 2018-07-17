@@ -10,7 +10,6 @@ stages:
   - test
   - moban
   - name: unsupported
-    if: branch = master AND type = push
 
 .check_moban: &check_moban
   python: 3.6
