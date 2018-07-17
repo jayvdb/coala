@@ -30,5 +30,6 @@ fi
 set -e
 
 grep -q 'coala supports only python 3.4.4 or later' setup.log
+grep -q 'error: Setup script exited with 4' setup.log
 
 echo "Unsupported check completed successfully"
