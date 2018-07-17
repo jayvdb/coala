@@ -8,7 +8,7 @@ set -o pipefail
 
 set -x
 
-python setup.py install | tee setup.log
+python setup.py install 2>&1 | tee setup.log
 
 retval=$?
 
@@ -29,7 +29,9 @@ fi
 # error when no lines selected by grep
 set -e
 
+# The following is emitted on stdout
 grep -q 'coala supports only python 3.4.4 or later' setup.log
+# The following is emitted on stderr
 grep -q 'error: Setup script exited with 4' setup.log
 
 echo "Unsupported check completed successfully"
