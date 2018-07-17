@@ -5,13 +5,13 @@ set +e
 # Enable capturing the non-zero exit status of coverage instead of tee
 set -o pipefail
 
-coverage run setup.py install | tee setup.log
+python setup.py install | tee setup.log
 
 retval=$?
 
 # coalib.__init__.py should exit with 4 on unsupported versions of Python
 if [[ $retval != 4 ]]; then
-  echo "Unexpected error code $?"
+  echo "Unexpected error code $retval"
 
   # When the exit code is 0, use a non-zero exit code instead
   if [[ $retval == 0 ]]; then
