@@ -12,7 +12,7 @@ python setup.py install 2>&1 | tee setup.log
 
 retval=$?
 
-set +x
+set -x
 
 # coalib.__init__.py should exit with 4 on unsupported versions of Python
 # But bears setup.py sees retval 1.
