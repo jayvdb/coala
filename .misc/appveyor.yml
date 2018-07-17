@@ -38,14 +38,13 @@ install:
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
   - "%CMD_IN_ENV% python -m pip install setuptools==21"
   - "%CMD_IN_ENV% python .misc/check_setuptools.py"
-  - "%CMD_IN_ENV% python -m pip install -r requirements.txt \
-    -r test-requirements.txt"
+  - 'if %PYTHON_VERSION% != "2.7" (%CMD_IN_ENV% python -m pip install -r requirements.txt -r test-requirements.txt)'
 
 build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
-  - "%CMD_IN_ENV% py.test"
-  - "%CMD_IN_ENV% python setup.py install"
+  - 'if %PYTHON_VERSION% != "2.7" (CMD_IN_ENV% py.test)'
+  - 'if %PYTHON_VERSION% != "2.7" (%CMD_IN_ENV% python setup.py install)'
 
 on_success:
   - codecov
