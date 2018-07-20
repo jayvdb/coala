@@ -6,6 +6,10 @@ from coalib.collecting.Collectors import get_all_bears_names
 from coalib.parsing.filters import available_filters
 
 
+def _autocomplete_bears_names(*args, **kwargs):
+    return get_all_bears_names()
+
+
 class CustomFormatter(argparse.RawDescriptionHelpFormatter):
     """
     A Custom Formatter that will keep the metavars in the usage but remove them
@@ -156,8 +160,7 @@ To run coala without user interaction, run the `coala --non-interactive`,
 
     inputs_group.add_argument(
         '-b', '--bears', nargs='+', metavar='NAME',
-        help='names of bears to use').completer = (
-            lambda *args, **kwargs: get_all_bears_names())  # pragma: no cover
+        help='names of bears to use').completer = _autocomplete_bears_names
 
     inputs_group.add_argument(
         '-f', '--files', type=PathArg, nargs='+', metavar='FILE',

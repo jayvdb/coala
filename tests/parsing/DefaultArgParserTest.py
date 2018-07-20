@@ -2,7 +2,11 @@ import argparse
 import re
 import unittest
 
-from coalib.parsing.DefaultArgParser import CustomFormatter
+from coalib.collecting.Collectors import get_all_bears_names
+from coalib.parsing.DefaultArgParser import (
+    _autocomplete_bears_names,
+    CustomFormatter,
+)
 
 
 class CustomFormatterTest(unittest.TestCase):
@@ -31,3 +35,9 @@ class CustomFormatterTest(unittest.TestCase):
                           flags=re.DOTALL)
         self.assertIsNotNone(match)
         self.assertEqual(match.group(1), '-a, --all')
+
+    def test_autocomplete_bear_names(self):
+        self.assertEqual(
+            _autocomplete_bears_names(),
+            get_all_bears_names()
+        )
