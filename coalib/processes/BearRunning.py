@@ -559,6 +559,15 @@ def run(file_name_queue,
                          control_queue,
                          debug=debug)
         control_queue.put((CONTROL_ELEMENT.GLOBAL_FINISHED, None))
-    except (OSError, KeyboardInterrupt):  # pragma: no cover
+    except KeyboardInterrupt:
         if debug:
             raise
+    except OSError as e:
+        if debug:
+            raise
+        always_false = e
+        if always_false:
+            logging.warning(
+                'Core failed during running of bears with OSError: %s. '
+                'Ignoring it, but this is a bug, please report it to the '
+                'developers.' % e)
