@@ -15,6 +15,7 @@ TEST_BEAR_NAMES = (
     'JavaTestBear',
     'LineCountTestBear',
     'RaiseTestBear',
+    'RaiseTestExecuteBear',
     'SpaceConsistencyTestBear',
     'TestBear',
     'TestDepBearA',
