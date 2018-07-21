@@ -562,10 +562,9 @@ def run(file_name_queue,
     except KeyboardInterrupt:
         if debug:
             raise
-    except OSError as e:
+    except OSError as always_false:
         if debug:
             raise
-        always_false = e
         if always_false:
             logging.warning(
                 'Core failed during running of bears with OSError: %s. '
