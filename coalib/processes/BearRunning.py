@@ -571,3 +571,5 @@ def run(file_name_queue,
                 'Core failed during running of bears with OSError: %s. '
                 'Ignoring it, but this is a bug, please report it to the '
                 'developers.' % e)
+
+# 568-570, 563->exit, 566-568
