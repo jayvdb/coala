@@ -8,6 +8,7 @@ import sys
 from os import getenv
 from subprocess import call
 
+from distutils.version import LooseVersion
 import setuptools.command.build_py
 from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
@@ -127,6 +128,57 @@ if on_rtd:
 __dir__ = os.path.dirname(__file__)
 
 
+def egg_name_to_requirement(name):
+    name = name.strip()
+    parts = name.split('-')
+
+    # The first part may be v or v0, which would be considered a version
+    # if processed in the following loop.
+    name_parts = [parts[0]]
+    # Pre-releases may contain a '-' and be alpha only, so we must
+    # parse from the second part to find the first version-like part.
+    for part in parts[1:]:
+        version = LooseVersion(part)
+        version = version.version
+        v_prefix = version[0] == 'v'
+        if v_prefix:
+            version = version[1:]
+        if isinstance(version[0], int):
+            break
+        name_parts.append(part)
+
+    version_parts = parts[len(name_parts):]
+
+    if not version_parts:
+        return name
+
+    name = '-'.join(name_parts)
+
+    version = LooseVersion('-'.join(version_parts))
+
+    # Assume that alpha, beta, pre, post & final releases
+    # are in PyPi so setutools can find it.
+    if not any(part == 'dev' for part in version.version):
+        return name + '==' + version
+
+    # For development releases, which will not usually be PyPi,
+    # setuptools will fail with `==` and `~=` as it will look for the
+    # release in PyPi.
+    # Decrement the first non-final version part, which should be in PyPi,
+    # and use version specifier >= so that the installed package from VCS
+    # will have a version acceptable to the requirement.
+    for i, part in enumerate(version.version):
+        if not isinstance(part, int):
+            break
+
+    previous_final_version = version.version[0:i]
+    previous_final_version[i - 1] -= 1
+
+    version = '.'.join(str(part) for part in previous_final_version)
+
+    return name + '>=' + version
+
+
 def read_requirements(filename):
     """
     Parse a requirements file.
@@ -152,7 +204,7 @@ def read_requirements(filename):
 
                 DEPENDENCY_LINKS.append(line)
 
-                line = egg_name.replace('-', '==')
+                line = egg_name_to_requirement(egg_name)
 
             data.append(line)
 
