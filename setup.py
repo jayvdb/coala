@@ -176,7 +176,7 @@ def egg_name_to_requirement(name):
 
     version = '.'.join(str(part) for part in previous_final_version)
 
-    return name + '>=' + version
+    return name + '>' + version
 
 
 def read_requirements(filename):
