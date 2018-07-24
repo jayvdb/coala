@@ -128,6 +128,139 @@ if on_rtd:
 __dir__ = os.path.dirname(__file__)
 
 
+class PEP440Version(LooseVersion):
+    """
+    Basic PEP440 version with a few features.
+
+    Uses the same version semantics as LooseVersion,
+    with the addition that a ``v`` prefix is allowed
+    in the version as required by PEP 440.
+
+    vstring may be a list, tuple or string.
+
+    v_prefix is auto-detected by default.
+    Set to False to remove if present, or True to add if missing.
+    """
+
+    def __init__(self, vstring=None, v_prefix=None):
+        self._v_prefix = v_prefix
+        if isinstance(vstring, (list, tuple)):
+            self.version = vstring
+            if (len(vstring) and not isinstance(vstring[0], int) and
+                        vstring[0].startswith('v')):
+                try:
+                    v = int(vstring[0][1:])
+
+                    self.version = type(vstring)(
+                        [v] + vstring[1:])
+
+                    if v_prefix is not False:
+                        self._v_prefix = True
+                except ValueError:
+                    pass
+
+            self.vstring = str(self)
+        else:
+            if vstring.startswith('v'):
+                vstring = vstring[1:]
+                if self._v_prefix is not False:
+                    self._v_prefix = True
+            super(PEP440Version, self).__init__(vstring)
+            if self._v_prefix:
+                self.vstring = 'v' + self.vstring
+
+        self._final = None
+        self._previous = None
+
+    def __str__(self):
+        return (('v' if self._v_prefix else '') +
+                '.'.join([str(i) for i in self.version]))
+
+    def __repr__(self):
+        return "%s('%s')" % (self.__class__.__name__, str(self))
+
+    @property
+    def is_dev(self):
+        return any(part == 'dev' for part in self.version)
+
+    @property
+    def final(self):
+        """
+        Provide only the final component of the version.
+
+        A new instance is return if this instance is not final.
+        """
+        if self._final is not None:
+            return self._final
+
+        for i, part in enumerate(self.version):
+            if not isinstance(part, int):
+                final = self.version[:i]
+                break
+        else:
+            self._final = self
+            return self
+
+        self._final = PEP440Version(final, self._v_prefix)
+
+        return self._final
+
+    @property
+    def is_final(self):
+        return self.final == self
+
+    @property
+    def is_zero(self):
+        return all(part == 0 for part in self.version)
+
+    _zero_message = 'version prior to 0.0 can not exist'
+
+    def _estimate_previous(self):
+        """
+        Return a new version calculated to be the previous version.
+
+        Currently only handles when the current instance is a final version.
+
+        To really get the previous for 1.0.0, we need to consult PyPi,
+        git tags, or some other source of all released versions,
+        to find the highest patch release in the prior minor release, or
+        highest minor releases if there were no patch releases in the
+        last minor release, etc.
+
+        As a result, currently this assumes that release x.(x-1).0 exists
+        in that instance.
+        """
+        if self._previous:
+            return self._previous
+
+        assert self.is_final, '%r is not final' % self
+
+        if self.is_zero:
+            raise ValueError(self._zero_message)
+
+        version = self.version
+        pos = len(version) - 1
+
+        # Look for non-zero part
+        while pos != 0 and not version[pos]:
+            pos -= 1
+
+        previous = []
+        if pos:
+            previous = version[:pos]
+
+        previous += (version[pos] - 1, )
+
+        if pos <= len(version):
+            previous += [0] * (len(version) - pos - 2)
+
+            if len(previous) < len(version):
+                previous += ('*', )
+
+        self._previous = PEP440Version(previous, self._v_prefix)
+        return self._previous
+
+
 def egg_name_to_requirement(name):
     name = name.strip()
     parts = name.split('-')
@@ -154,29 +287,30 @@ def egg_name_to_requirement(name):
 
     name = '-'.join(name_parts)
 
-    version = LooseVersion('-'.join(version_parts))
+    version = PEP440Version('-'.join(version_parts))
 
     # Assume that alpha, beta, pre, post & final releases
     # are in PyPi so setutools can find it.
-    if not any(part == 'dev' for part in version.version):
+    if not version.is_dev:
         return name + '==' + version
 
+    # setuptools fails if a version is given with any specifier such as
+    # `==`, `=~`, `>`, if the version is not in PyPi.
+
     # For development releases, which will not usually be PyPi,
-    # setuptools will fail with `==` and `~=` as it will look for the
-    # release in PyPi.
-    # Decrement the first non-final version part, which should be in PyPi,
-    # and use version specifier >= so that the installed package from VCS
-    # will have a version acceptable to the requirement.
-    for i, part in enumerate(version.version):
-        if not isinstance(part, int):
-            break
+    # setuptools will typically fail.
 
-    previous_final_version = version.version[0:i]
-    previous_final_version[i - 1] -= 1
+    # So we estimate a previous release that should exist in PyPi,
+    # by decrementing the lowest final version part, # and use version
+    # specifier `>` so that the installed package from VCS will have a
+    # version acceptable to the requirement.
+    previous_version = version.final._estimate_previous()
 
-    version = '.'.join(str(part) for part in previous_final_version)
+    if previous_version.is_zero:
+        raise ValueError(
+           'Version %s could not be decremented' % version.version)
 
-    return name + '>' + version
+    return name + '>' + str(previous_version)
 
 
 def read_requirements(filename):
@@ -212,6 +346,8 @@ def read_requirements(filename):
 
 
 required = read_requirements('requirements.txt')
+
+print(required)
 
 test_required = read_requirements('test-requirements.txt')
 
