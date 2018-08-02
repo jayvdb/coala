@@ -1,5 +1,7 @@
 argcomplete~=1.8
-coverage~=4.3.4
+# coverage 4.4.2 broke compatibility with coverage-config-reload-plugin.
+# coverage-config-reload-plugin needs to be updated.
+coverage==4.4.1
 coverage-env-plugin~=0.1
 coverage-config-reload-plugin~=0.2
 codecov~=2.0.5
