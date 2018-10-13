@@ -115,7 +115,7 @@ script:
   - pip install ./dist/coala-*.whl
   - curl -fsSL -o coala-bears.zip $BEARS_ZIP_URL/master
   - pip install coala-bears.zip[alldeps] --pre -U
-  - coala --non-interactive
+  - coala --non-interactive -V
   - python setup.py docs
   - .ci/check_man.sh
 
