@@ -3,7 +3,6 @@ import os
 import pkg_resources
 import unittest
 
-from functools import partial
 from pyprint.ConsolePrinter import ConsolePrinter
 
 from testfixtures import LogCapture
@@ -89,48 +88,6 @@ class CollectFilesTest(unittest.TestCase):
                                            'py_files',
                                            'file2.py')]),
                          [])
-
-    def test_ignored_dirs(self):
-        def dir_base(*args):
-            return os.path.normcase(os.path.join(self.collectors_test_dir,
-                                                 'others', *args))
-
-        files_to_check = [dir_base('*', '*2.py'),
-                          dir_base('**', '*.pyc'),
-                          dir_base('*', '*1.c')]
-        ignore = dir_base('py_files', '')
-        collect_files_partial = partial(collect_files,
-                                        files_to_check)
-        self.assertEqual(
-            collect_files_partial(ignored_file_paths=[ignore]),
-            [dir_base('c_files', 'file1.c')])
-        self.assertEqual(
-            collect_files_partial(ignored_file_paths=[ignore.rstrip(os.sep)]),
-            [dir_base('c_files', 'file1.c')])
-        self.assertEqual(
-            collect_files_partial(
-                ignored_file_paths=[dir_base('py_files', '**')]),
-            [dir_base('c_files', 'file1.c')])
-        self.assertEqual(
-            collect_files_partial(
-                ignored_file_paths=[dir_base('py_files', '*')]),
-            [dir_base('c_files', 'file1.c')])
-
-    def test_trailing_globstar(self):
-        ignore_path = os.path.join(self.collectors_test_dir,
-                                   'others',
-                                   'c_files',
-                                   '**')
-        with LogCapture() as capture:
-            collect_files(file_paths=[],
-                          ignored_file_paths=[ignore_path],
-                          log_printer=self.log_printer)
-        capture.check(
-            ('root', 'WARNING', 'Detected trailing globstar in ignore glob '
-                                '\'{}\'. Please remove the unnecessary \'**\''
-                                ' from its end.'
-                                .format(ignore_path))
-        )
 
     def test_limited(self):
         self.assertEqual(
