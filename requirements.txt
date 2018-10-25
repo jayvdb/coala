@@ -1,9 +1,9 @@
 appdirs~=1.4
 cached-property~=1.4.3
 cli_helpers~=1.0.2
-coala-utils>=0.7.0 @ https://gitlab.com/coala/coala-utils/-/archive/master/coala-utils-master.zip
+coala-utils>=0.7.0@https://gitlab.com/coala/coala-utils/-/archive/master/coala-utils-master.zip
 colorlog>=2.7,<4.0
-dependency-management>=0.5.0.dev0 @ https://gitlab.com/coala/package_manager/-/archive/master/package_manager-master.zip
+dependency-management>=0.5.0.dev0@https://gitlab.com/coala/package_manager/-/archive/master/package_manager-master.zip
 packaging>=16.8
 Pygments~=2.1
 PyPrint~=0.2.6
