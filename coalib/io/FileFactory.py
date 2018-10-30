@@ -90,12 +90,17 @@ class FileFactory:
         :return:
             A tuple containing the lines of the file.
         """
-        lines = self.string.splitlines()
-        if self._newline:
-            return tuple(line if line.endswith('\n') else line + '\n'
-                         for line in lines)
-        else:
-            return tuple(lines)
+        lines = self.string.splitlines(keepends=True)
+        # Special case the empty file, which should not have an EOL added
+        # as tools interpret that as an empty line and generate errors.
+        if not lines:
+            return tuple([''])
+
+        if lines and self._newline:
+            if not lines[-1].endswith('\n'):
+                lines[-1] += '\n'
+
+        return tuple(lines)
 
     @cached_property
     def raw(self):

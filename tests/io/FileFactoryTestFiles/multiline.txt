@@ -1,0 +1,2 @@
+This is line 1.
+And here is line 2 without a EOL
