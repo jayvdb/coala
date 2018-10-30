@@ -676,14 +676,30 @@ def _create_linter(klass, options):
                 self.debug("Running '{}'".format(
                     ' '.join(str(arg) for arg in arguments)))
 
-                output = run_shell_command(
+                stdout, stderr = run_shell_command(
                     arguments,
                     stdin=''.join(file) if options['use_stdin'] else None,
                     cwd=self.get_config_dir())
 
-                output = tuple(compress(
-                    output,
-                    (options['use_stdout'], options['use_stderr'])))
+                output = None
+                if options['use_stdout'] and options['use_stderr']:
+                    output = stdout, stderr
+                elif options['use_stdout']:
+                    if stdout:
+                        output = stdout,
+                    if stderr:
+                        self.warn(f'discarded stderr: {stderr}')
+
+                elif options['use_stderr']:
+                    if stderr:
+                        output = stderr,
+                    if stdout:
+                        self.info(f'discarded stdout: {stdout}')
+
+                if not stdout:
+                    self.warn(f'no output')
+                    return []
+
                 if options['strip_ansi']:
                     output = tuple(map(strip_ansi, output))
                 if len(output) == 1:
