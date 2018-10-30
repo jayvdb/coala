@@ -2,7 +2,7 @@ from contextlib import contextmanager
 from functools import partial, partialmethod
 import logging
 import inspect
-from itertools import chain, compress
+from itertools import chain
 import re
 import shutil
 from subprocess import check_call, CalledProcessError, DEVNULL
@@ -676,14 +676,38 @@ def _create_linter(klass, options):
                 self.debug("Running '{}'".format(
                     ' '.join(str(arg) for arg in arguments)))
 
-                output = run_shell_command(
+                result = run_shell_command(
                     arguments,
                     stdin=''.join(file) if options['use_stdin'] else None,
                     cwd=self.get_config_dir())
 
-                output = tuple(compress(
-                    output,
-                    (options['use_stdout'], options['use_stderr'])))
+                stdout, stderr = result
+
+                if not options['use_stdout'] and stdout:
+                    logging.warning(
+                        '{}: Discarded stdout: {}'.format(
+                            self.__class__.__name__, stdout))
+                    stdout = ''
+
+                if not options['use_stderr'] and stderr:
+                    logging.warning(
+                        '{}: Discarded stderr: {}'.format(
+                            self.__class__.__name__, stderr))
+                    stderr = ''
+
+                output = None
+                if stdout and stderr:
+                    output = stdout, stderr
+                elif stdout:
+                    output = stdout,
+                elif stderr:
+                    output = stderr,
+                else:
+                    logging.info(
+                        '{}: No output; skipping processing'.format(
+                            self.__class__.__name__))
+                    return []
+
                 if options['strip_ansi']:
                     output = tuple(map(strip_ansi, output))
                 if len(output) == 1:
