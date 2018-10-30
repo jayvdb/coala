@@ -28,29 +28,38 @@ class FileFactoryTest(unittest.TestCase):
         self.assertNotEqual(self.uut, self.other_file_factory)
 
     def test_iter(self):
-        self.assertEqual(list(self.uut), ['This is a test file.\n'])
+        self.assertEqual(list(self.uut),
+                         ['An ordinary line.',
+                          'This is a line without an EOL',
+                          ])
 
     def test_line(self):
-        self.assertEqual(self.uut.get_line(0), 'This is a test file.\n')
+        self.assertEqual(self.uut.get_line(0), 'An ordinary line.')
+        self.assertEqual(self.uut.get_line(1), 'This is a line without an EOL')
         with self.assertRaises(IndexError):
-            self.uut.get_line(1)
+            self.uut.get_line(2)
 
     def test_deprecated_dict_getitem(self):
-        self.assertEqual(self.uut[0], 'This is a test file.\n')
+        self.assertEqual(self.uut[0], 'An ordinary line.')
+        self.assertEqual(self.uut[1], 'This is a line without an EOL')
         with self.assertRaises(IndexError):
-            self.uut[1]
+            self.uut[2]
 
     def test_lines(self):
-        self.assertEqual(self.uut.lines, ('This is a test file.\n',))
-        self.assertEqual(self.uut.lines, ('This is a test file.\n',))
+        self.assertEqual(self.uut.lines,
+                         ('An ordinary line.',
+                          'This is a line without an EOL',
+                          ))
 
     def test_raw(self):
-        self.assertEqual(self.uut.raw, b'This is a test file.')
-        self.assertEqual(self.uut.raw, b'This is a test file.')
+        self.assertEqual(self.uut.raw,
+                         b'An ordinary line.\n'
+                         b'This is a line without an EOL')
 
     def test_string(self):
-        self.assertEqual(self.uut.string, 'This is a test file.')
-        self.assertEqual(self.uut.string, 'This is a test file.')
+        self.assertEqual(self.uut.string,
+                         'An ordinary line.\n'
+                         'This is a line without an EOL')
 
     def test_timestamp(self):
         self.assertEqual(self.uut.timestamp, os.path.getmtime(self.test_file))

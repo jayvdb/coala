@@ -27,7 +27,7 @@ class FileFactory:
     >>> temp.write(bytes('This is a test file.', 'UTF-8'))
     20
     >>> temp.close()
-    >>> ff = FileFactory(temp.name, newline=False)
+    >>> ff = FileFactory(temp.name)
 
     File indices start with zero.
     To retrieve a single line:
@@ -64,14 +64,13 @@ class FileFactory:
     >>> os.remove(ff.name)
     """
 
-    def __init__(self, filename, newline=True):
+    def __init__(self, filename):
         """
         :param filename:
             The filepath.
         """
         self._filename = os.path.abspath(filename)
         self._timestamp = os.path.getmtime(self._filename)
-        self._newline = newline
 
     def get_line(self, line):
         """
@@ -91,11 +90,7 @@ class FileFactory:
             A tuple containing the lines of the file.
         """
         lines = self.string.splitlines()
-        if self._newline:
-            return tuple(line if line.endswith('\n') else line + '\n'
-                         for line in lines)
-        else:
-            return tuple(lines)
+        return tuple(lines)
 
     @cached_property
     def raw(self):
