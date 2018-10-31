@@ -493,6 +493,9 @@ def yield_ignore_ranges(file_dict):
         if file is None:
             continue
 
+        # if len(file) == 0:
+        #     continue
+
         for line_number, line in enumerate(file, start=1):
             # Before lowering all lines ever read, first look for the biggest
             # common substring, case sensitive: I*gnor*e, start i*gnor*ing,
