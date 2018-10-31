@@ -695,6 +695,11 @@ def _create_linter(klass, options):
                             self.__class__.__name__, stderr))
                     stderr = ''
 
+                if result.code:
+                    logging.warning(
+                        '{}: Exit code {}'.format(
+                            self.__class__.__name__, result.code))
+
                 output = None
                 if stdout and stderr:
                     output = stdout, stderr
