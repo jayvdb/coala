@@ -524,7 +524,9 @@ def yield_ignore_ranges(file_dict):
                                    SourceRange.from_values(
                                        filename,
                                        line_number, 1,
-                                       end_line, len(file[end_line-1])))
+                                       end_line,
+                                       len(file[end_line-1]) or 1,
+                                       ))
                             break
 
         if stop_ignoring is False and start is not None:
