@@ -683,13 +683,19 @@ def _create_linter(klass, options):
 
                 stdout, stderr = result
 
-                if not options['use_stdout'] and stdout:
+                output = []
+
+                if options['use_stdout']:
+                    output.append(stdout)
+                elif stdout:
                     logging.warning(
                         '{}: Discarded stdout: {}'.format(
                             self.__class__.__name__, stdout))
                     stdout = ''
 
-                if not options['use_stderr'] and stderr:
+                if options['use_stderr']:
+                    output.append(stderr)
+                elif stderr:
                     logging.warning(
                         '{}: Discarded stderr: {}'.format(
                             self.__class__.__name__, stderr))
@@ -700,23 +706,19 @@ def _create_linter(klass, options):
                         '{}: Exit code {}'.format(
                             self.__class__.__name__, result.code))
 
-                output = None
-                if stdout and stderr:
-                    output = stdout, stderr
-                elif stdout:
-                    output = stdout,
-                elif stderr:
-                    output = stderr,
+                if options['strip_ansi']:
+                    output = tuple(map(strip_ansi, output))
                 else:
+                    output = tuple(output)
+                if len(output) == 1:
+                    output = output[0]
+
+                if not any([stdout, stderr]):
                     logging.info(
                         '{}: No output; skipping processing'.format(
                             self.__class__.__name__))
-                    return []
+                    return output
 
-                if options['strip_ansi']:
-                    output = tuple(map(strip_ansi, output))
-                if len(output) == 1:
-                    output = output[0]
                 process_output_kwargs = FunctionMetadata.filter_parameters(
                     self._get_process_output_metadata(), kwargs)
                 return self.process_output(output, filename, file,
