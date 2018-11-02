@@ -718,7 +718,7 @@ def _create_linter(klass, options):
                     logging.info(
                         '{}: No output; skipping processing'.format(
                             self.__class__.__name__))
-                    return output
+                    return
 
                 process_output_kwargs = FunctionMetadata.filter_parameters(
                     self._get_process_output_metadata(), kwargs)
