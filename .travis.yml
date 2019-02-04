@@ -2,8 +2,6 @@ sudo: false
 language: python
 python:
   - 3.4.4
-  - 3.5
-  - 3.4.2
 
 stages:
   - name: sentinel
@@ -23,7 +21,7 @@ stages:
 .check_moban: &check_moban
   <<: *disable_global
   python: 3.6
-  stage: moban
+  stage: test
   install: pip install moban
   script: .misc/check_moban.sh
   if: branch != master OR type = pull_request
