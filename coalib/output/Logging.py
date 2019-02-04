@@ -3,7 +3,6 @@ from collections import Counter
 import json
 import io
 import logging
-import logging.config
 
 
 class CounterHandler(logging.Handler):
