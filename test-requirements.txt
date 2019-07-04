@@ -28,5 +28,6 @@ requests-mock~=1.2
 ipdb~=0.11
 pip<10
 pyparsing
+six>=1.11.0
 wheel~=0.29
 testfixtures~=5.3.1
