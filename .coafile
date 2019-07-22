@@ -134,6 +134,8 @@ ignore = node_modules/
 [jinja2]
 bears = Jinja2Bear
 files = **.jj2
+check_end_labels = False
+ignore = .moban.dt/core-travis.yml.jj2
 
 [TODOS]
 enabled = False
