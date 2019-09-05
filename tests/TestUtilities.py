@@ -117,70 +117,16 @@ def execute_coala(func, binary, *args, debug=False):
                         a stdout output as second element and a stderr output
                         as third element if stdout_only is False.
     """
-    logging.warning('before')
-
     sys.argv = [binary] + list(args)
-    old_stdout = sys.stdout
-    print(old_stdout)
-    old_stderr = sys.stderr
     with retrieve_stdout() as stdout:
-        new_stdout = sys.stdout
-        print('new_stdout', new_stdout)
-        print('cm_stdout', stdout)
-
-        rv = (0, stdout.getvalue(), "")
-
         with retrieve_stderr() as stderr:
-            new_stderr = sys.stderr
-            print('new_stderr', new_stderr)
-            print('cm_stderr', stderr)
-
-            logging.warning('inside')
-            rv = (0, stdout.getvalue(), stderr.getvalue())
-            try:
-                retval = func(debug=debug)
-            except Exception as e:
-                print(e)
-                retval = 0
-
-            after_stdout = sys.stdout
-            after_stderr = sys.stderr
-
-            print('after_stdout_1', after_stdout)
-            print('after_stderr_1', after_stderr)
-
-            rv = (retval, stdout.getvalue(), stderr.getvalue())
-            logging.warning('after')
+            retval = func(debug=debug)
 
             logging.config._clearExistingHandlers()
             logging.Logger.root = logging.root = logging.RootLogger(logging.WARNING)
             logging.Logger.manager = logging.Manager(logging.Logger.root)
 
-        logging.config._clearExistingHandlers()
-        logging.Logger.root = logging.root = logging.RootLogger(logging.WARNING)
-        logging.Logger.manager = logging.Manager(logging.Logger.root)
-
-        after_stdout = sys.stdout
-        after_stderr = sys.stderr
-
-        print('after_stdout_1', after_stdout)
-        print('after_stderr_1', after_stderr)
-
-        logging.warning('half-way out', rv)
-
-    logging.config._clearExistingHandlers()
-    logging.Logger.root = logging.root = logging.RootLogger(logging.WARNING)
-    logging.Logger.manager = logging.Manager(logging.Logger.root)
-
-    assert old_stdout == sys.stdout
-    assert not sys.stdout.closed
-
-    assert old_stderr == sys.stderr
-    assert not sys.stderr.closed
-
-    logging.warning('end')
-
-    return rv
+            return (retval, stdout.getvalue(), stderr.getvalue())
 
 
 @contextmanager
