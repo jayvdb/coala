@@ -122,7 +122,14 @@ def execute_coala(func, binary, *args, debug=False):
         with retrieve_stderr() as stderr:
             retval = func(debug=debug)
 
-            logging.config._clearExistingHandlers()
+            try:
+                logging.config._clearExistingHandlers()
+            except AttributeError:  # pragma Python 3.6,3.7: no cover
+
+                logging._handlers.clear()
+                logging.shutdown(logging._handlerList[:])
+                del logging._handlerList[:]
+
             logging.Logger.root = logging.root = logging.RootLogger(
                 logging.WARNING)
             logging.Logger.manager = logging.Manager(logging.Logger.root)
