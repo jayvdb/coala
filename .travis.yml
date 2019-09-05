@@ -131,6 +131,7 @@ before_script:
   - python .misc/check_setuptools.py
 
 script:
+  # Tinker to do new build with restored simulate_console_inputs
   - py.test -s -vvv tests/coalaTest.py::coalaTest1::test_coala tests/bearlib/abstractions/LinterTest.py::LinterRunTest::test_strip_ansi
 
 after_success:
