@@ -132,14 +132,31 @@ def execute_coala(func, binary, *args, debug=False):
 
         with retrieve_stderr() as stderr:
             new_stderr = sys.stderr
-            print('new_stdout', new_stderr)
+            print('new_stderr', new_stderr)
             print('cm_stderr', stderr)
 
             logging.warning('inside')
             rv = (0, stdout.getvalue(), stderr.getvalue())
-            retval = func(debug=debug)
+            try:
+                retval = func(debug=debug)
+            except Exception as e:
+                print(e)
+                retval = 0
+
+            after_stdout = sys.stdout
+            after_stderr = sys.stderr
+
+            print('after_stdout_1', after_stdout)
+            print('after_stderr_1', after_stderr)
+
             rv = (retval, stdout.getvalue(), stderr.getvalue())
             logging.warning('after')
+
+        after_stdout = sys.stdout
+        after_stderr = sys.stderr
+
+        print('after_stdout_1', after_stdout)
+        print('after_stderr_1', after_stderr)
 
         logging.warning('half-way out', rv)
 
