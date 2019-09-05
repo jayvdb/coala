@@ -123,7 +123,8 @@ def execute_coala(func, binary, *args, debug=False):
             retval = func(debug=debug)
 
             logging.config._clearExistingHandlers()
-            logging.Logger.root = logging.root = logging.RootLogger(logging.WARNING)
+            logging.Logger.root = logging.root = logging.RootLogger(
+                logging.WARNING)
             logging.Logger.manager = logging.Manager(logging.Logger.root)
 
             return (retval, stdout.getvalue(), stderr.getvalue())
