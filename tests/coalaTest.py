@@ -25,13 +25,16 @@ from tests.TestUtilities import (
 JAVA_BEARS_COUNT_OUTPUT = JAVA_BEARS_COUNT + 1
 
 
-class coalaTest(unittest.TestCase):
+class coalaTestBase(unittest.TestCase):
 
     def setUp(self):
         self.old_argv = sys.argv
 
     def tearDown(self):
         sys.argv = self.old_argv
+
+
+class coalaTest1(coalaTestBase):
 
     def test_coala(self):
         with bear_test_module():
@@ -253,6 +256,9 @@ class coalaTest(unittest.TestCase):
 
     def test_show_capabilities_with_supported_language_debug(self):
         self.test_show_capabilities_with_supported_language(debug=True)
+
+
+class coalaTest2(coalaTestBase):
 
     @unittest.mock.patch('coalib.collecting.Collectors.icollect_bears')
     def test_version_conflict_in_collecting_bears(self, import_fn):
