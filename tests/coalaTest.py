@@ -119,6 +119,9 @@ class coalaTest1(coalaTestBase):
                                         'coala must return nonzero when '
                                         'errors occured')
 
+
+class coalaTest2(coalaTestBase):
+
     def test_coala_aspect(self):
         with bear_test_module():
             with prepare_file(['#fixme'], None) as (lines, filename):
@@ -209,6 +212,9 @@ class coalaTest1(coalaTestBase):
             self.assertEqual(len(stdout.splitlines()), 2)
             self.assertFalse(stderr)
 
+
+class coalaTest3(coalaTestBase):
+
     def test_execute_with_bad_filters(self, debug=False):
         with bear_test_module():
             with prepare_file(['#fixme'], None) as (lines, filename):
@@ -258,7 +264,7 @@ class coalaTest1(coalaTestBase):
         self.test_show_capabilities_with_supported_language(debug=True)
 
 
-class coalaTest2(coalaTestBase):
+class coalaTest4(coalaTestBase):
 
     @unittest.mock.patch('coalib.collecting.Collectors.icollect_bears')
     def test_version_conflict_in_collecting_bears(self, import_fn):
