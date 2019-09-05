@@ -25,7 +25,7 @@ from tests.TestUtilities import (
 JAVA_BEARS_COUNT_OUTPUT = JAVA_BEARS_COUNT + 1
 
 
-class coalaTestBase(unittest.TestCase):
+class coalaTest(unittest.TestCase):
 
     def setUp(self):
         self.old_argv = sys.argv
@@ -33,14 +33,25 @@ class coalaTestBase(unittest.TestCase):
     def tearDown(self):
         sys.argv = self.old_argv
 
-
-class coalaTest1(coalaTestBase):
-
     def test_coala(self):
-        retval, stdout, stderr = execute_coala(
+        with bear_test_module():
+            with prepare_file(['#fixme'], None) as (lines, filename):
+                retval, stdout, stderr = execute_coala(
                                 coala.main,
                                 'coala', '-c', os.devnull,
-                                )
+                                '--non-interactive', '--no-color',
+                                '-f', filename,
+                                '-b', 'LineCountTestBear')
+                self.assertIn('This file has 1 lines.',
+                              stdout,
+                              'The output should report count as 1 lines')
+                self.assertEqual(1, len(stderr.splitlines()))
+                self.assertIn(
+                    'LineCountTestBear: This result has no patch attached.',
+                    stderr)
+                self.assertNotEqual(retval, 0,
+                                    'coala must return nonzero when '
+                                    'errors occured')
 
     def test_coala2(self):
         with bear_test_module(), retrieve_stdout() as sio:
@@ -104,9 +115,6 @@ class coalaTest1(coalaTestBase):
                     self.assertNotEqual(retval, 0,
                                         'coala must return nonzero when '
                                         'errors occured')
-
-
-class coalaTest2(coalaTestBase):
 
     def test_coala_aspect(self):
         with bear_test_module():
@@ -198,9 +206,6 @@ class coalaTest2(coalaTestBase):
             self.assertEqual(len(stdout.splitlines()), 2)
             self.assertFalse(stderr)
 
-
-class coalaTest3(coalaTestBase):
-
     def test_execute_with_bad_filters(self, debug=False):
         with bear_test_module():
             with prepare_file(['#fixme'], None) as (lines, filename):
@@ -248,9 +253,6 @@ class coalaTest3(coalaTestBase):
 
     def test_show_capabilities_with_supported_language_debug(self):
         self.test_show_capabilities_with_supported_language(debug=True)
-
-
-class coalaTest4(coalaTestBase):
 
     @unittest.mock.patch('coalib.collecting.Collectors.icollect_bears')
     def test_version_conflict_in_collecting_bears(self, import_fn):

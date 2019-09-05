@@ -131,8 +131,14 @@ before_script:
   - python .misc/check_setuptools.py
 
 script:
-  # Tinker to do new build with restored simulate_console_inputs
-  - py.test -s -vvv tests/coalaTest.py::coalaTest1::test_coala tests/bearlib/abstractions/LinterTest.py::LinterRunTest::test_strip_ansi
+  - py.test
+  - python setup.py bdist_wheel
+  - pip install ./dist/*.whl
+  - curl -fsSL -o coala-bears.zip $BEARS_ZIP_URL/master
+  - pip install coala-bears.zip[alldeps]
+  - coala --non-interactive
+  - python setup.py docs
+  - .ci/check_man.sh
 
 after_success:
   - codecov
