@@ -102,10 +102,10 @@ def main(debug=False):
 
     except BaseException as exception:  # pylint: disable=broad-except
         if not isinstance(exception, SystemExit):
-            if args and args.debug:
-                import ipdb
-                with ipdb.launch_ipdb_on_exception():
-                    raise
+            # if args and args.debug:
+            #     import ipdb
+            #     with ipdb.launch_ipdb_on_exception():
+            #         raise
 
             if debug:
                 raise

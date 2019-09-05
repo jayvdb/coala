@@ -224,9 +224,10 @@ def run_coala(console_printer=None,
             if args and args.debug or (
                     sections and sections.get('cli', {}).get('debug', False)
             ):
-                import ipdb
-                with ipdb.launch_ipdb_on_exception():
-                    raise
+                pass
+                # import ipdb
+                # with ipdb.launch_ipdb_on_exception():
+                #     raise
 
             if debug:
                 raise
