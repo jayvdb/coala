@@ -37,11 +37,10 @@ class coalaTestBase(unittest.TestCase):
 class coalaTest1(coalaTestBase):
 
     def test_coala(self):
-        with prepare_file(['#fixme'], None) as (lines, filename):
-            retval, stdout, stderr = execute_coala(
+        retval, stdout, stderr = execute_coala(
                                 coala.main,
                                 'coala', '-c', os.devnull,
-                                '--non-interactive', '--no-color')
+                                )
 
     def test_coala2(self):
         with bear_test_module(), retrieve_stdout() as sio:
