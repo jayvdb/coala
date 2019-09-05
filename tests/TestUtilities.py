@@ -128,13 +128,20 @@ def execute_coala(func, binary, *args, debug=False):
         print('new_stdout', new_stdout)
         print('cm_stdout', stdout)
 
+        rv = (0, stdout.getvalue(), "")
+
         with retrieve_stderr() as stderr:
+            new_stderr = sys.stderr
+            print('new_stdout', new_stderr)
+            print('cm_stderr', stderr)
+
             logging.warning('inside')
+            rv = (0, stdout.getvalue(), stderr.getvalue())
             retval = func(debug=debug)
             rv = (retval, stdout.getvalue(), stderr.getvalue())
             logging.warning('after')
 
-        logging.warning('half-way out')
+        logging.warning('half-way out', rv)
 
     assert old_stdout == sys.stdout
     assert not sys.stdout.closed
