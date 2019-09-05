@@ -131,7 +131,7 @@ before_script:
   - python .misc/check_setuptools.py
 
 script:
-  - py.test -s -vvv tests/coalaCITest.py tests/coalaDebugTest.py tests/coalaTest.py tests/coalaJSONTest.py tests/bearlib/languages/LanguageDefinitionTest.py
+  - py.test -s -vvv --doctest-modules coalib tests/coalaCITest.py tests/coalaDebugTest.py tests/coalaTest.py tests/coalaJSONTest.py tests/bearlib/languages/LanguageDefinitionTest.py
   - python setup.py bdist_wheel
   - pip install ./dist/*.whl
   - curl -fsSL -o coala-bears.zip $BEARS_ZIP_URL/master
