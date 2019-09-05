@@ -645,10 +645,14 @@ def _create_linter(klass, options):
             generate_config_kwargs = FunctionMetadata.filter_parameters(
                 self._get_generate_config_metadata(), kwargs)
 
+            logging.warning('Before _create_config')
+
             with self._create_config(
                     filename,
                     file,
                     **generate_config_kwargs) as config_file:
+
+                logging.warning('inside _create_config')
                 # And now retrieve the **kwargs for `create_arguments()`.
                 create_arguments_kwargs = (
                     FunctionMetadata.filter_parameters(
@@ -665,6 +669,8 @@ def _create_linter(klass, options):
                     args = self.create_arguments(config_file,
                                                  **create_arguments_kwargs)
 
+                logging.warning('after create arguments')
+
                 try:
                     args = tuple(args)
                 except TypeError:
@@ -676,12 +682,16 @@ def _create_linter(klass, options):
                 self.debug("Running '{}'".format(
                     ' '.join(str(arg) for arg in arguments)))
 
+                logging.warning('Before run_shell_command')
+
                 result = run_shell_command(
                     arguments,
                     stdin=''.join(file) if options['use_stdin'] else None,
                     cwd=self.get_config_dir())
 
                 stdout, stderr = result
+
+                logging.warning('After run_shell_command')
 
                 output = []
 

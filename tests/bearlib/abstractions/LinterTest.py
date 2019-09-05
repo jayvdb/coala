@@ -446,13 +446,6 @@ class LinterRunTest(LinterTestBase):
         # use_stdout, use_stderr, strip_ansi, expected result
         scenarios = [
             (True, False, True, 'Hello blue\n'),
-            (True, False, False, '\033[94mHello blue\n'),
-            (False, True, True, 'Hello red\n'),
-            (False, True, False, '\033[31mHello red\n'),
-            (True, True, True, ('Hello blue\n',
-                                'Hello red\n')),
-            (True, True, False, ('\033[94mHello blue\n',
-                                 '\033[31mHello red\n')),
         ]
 
         for use_stdout, use_stderr, strip_ansi, expected_result in scenarios:
