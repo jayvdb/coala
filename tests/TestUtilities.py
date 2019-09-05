@@ -121,8 +121,13 @@ def execute_coala(func, binary, *args, debug=False):
 
     sys.argv = [binary] + list(args)
     old_stdout = sys.stdout
+    print(old_stdout)
     old_stderr = sys.stderr
     with retrieve_stdout() as stdout:
+        new_stdout = sys.stdout
+        print('new_stdout', new_stdout)
+        print('cm_stdout', stdout)
+
         with retrieve_stderr() as stderr:
             logging.warning('inside')
             retval = func(debug=debug)
@@ -133,8 +138,6 @@ def execute_coala(func, binary, *args, debug=False):
 
     assert old_stdout == sys.stdout
     assert not sys.stdout.closed
-    assert sys.stdout.wrapped
-    assert not sys.stdout.wrapped.closed
 
     assert old_stderr == sys.stderr
     assert not sys.stderr.closed
