@@ -154,6 +154,8 @@ def execute_coala(func, binary, *args, debug=False):
 
             logging.config._clearExistingHandlers()
 
+        logging.config._clearExistingHandlers()
+
         after_stdout = sys.stdout
         after_stderr = sys.stderr
 
@@ -161,6 +163,8 @@ def execute_coala(func, binary, *args, debug=False):
         print('after_stderr_1', after_stderr)
 
         logging.warning('half-way out', rv)
+
+    logging.config._clearExistingHandlers()
 
     assert old_stdout == sys.stdout
     assert not sys.stdout.closed
