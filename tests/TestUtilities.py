@@ -117,10 +117,9 @@ def execute_coala(func, binary, *args, debug=False):
                         as third element if stdout_only is False.
     """
     sys.argv = [binary] + list(args)
-    with retrieve_stdout() as stdout:
-        with retrieve_stderr() as stderr:
-            retval = func(debug=debug)
-            return (retval, stdout.getvalue(), stderr.getvalue())
+    retval = func(debug=debug)
+    return retval, "", ""
+    #        return (retval, stdout.getvalue(), stderr.getvalue())
 
 
 @contextmanager
