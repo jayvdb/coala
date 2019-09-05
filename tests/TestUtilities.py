@@ -129,8 +129,12 @@ def execute_coala(func, binary, *args, debug=False):
             rv = (retval, stdout.getvalue(), stderr.getvalue())
             logging.warning('after')
 
+        logging.warning('half-way out')
+
     assert old_stdout == sys.stdout
     assert not sys.stdout.closed
+    assert sys.stdout.wrapped
+    assert not sys.stdout.wrapped.closed
 
     assert old_stderr == sys.stderr
     assert not sys.stderr.closed
