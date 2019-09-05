@@ -116,19 +116,25 @@ def execute_coala(func, binary, *args, debug=False):
                         a stdout output as second element and a stderr output
                         as third element if stdout_only is False.
     """
+    logging.warning('before')
+
     sys.argv = [binary] + list(args)
     old_stdout = sys.stdout
     old_stderr = sys.stderr
     with retrieve_stdout() as stdout:
         with retrieve_stderr() as stderr:
+            logging.warning('inside')
             retval = func(debug=debug)
             rv = (retval, stdout.getvalue(), stderr.getvalue())
+            logging.warning('after')
 
     assert old_stdout == sys.stdout
     assert not sys.stdout.closed
 
     assert old_stderr == sys.stderr
     assert not sys.stderr.closed
+
+    logging.warning('end')
 
     return rv
 
