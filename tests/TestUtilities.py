@@ -153,8 +153,10 @@ def execute_coala(func, binary, *args, debug=False):
             logging.warning('after')
 
             logging.config._clearExistingHandlers()
+            logging.Logger.manager._clear_cache()
 
         logging.config._clearExistingHandlers()
+        logging.Logger.manager._clear_cache()
 
         after_stdout = sys.stdout
         after_stderr = sys.stderr
@@ -165,6 +167,7 @@ def execute_coala(func, binary, *args, debug=False):
         logging.warning('half-way out', rv)
 
     logging.config._clearExistingHandlers()
+    logging.Logger.manager._clear_cache()
 
     assert old_stdout == sys.stdout
     assert not sys.stdout.closed
