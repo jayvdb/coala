@@ -152,6 +152,8 @@ def execute_coala(func, binary, *args, debug=False):
             rv = (retval, stdout.getvalue(), stderr.getvalue())
             logging.warning('after')
 
+            logging.config._clearExistingHandlers()
+
         after_stdout = sys.stdout
         after_stderr = sys.stderr
 
