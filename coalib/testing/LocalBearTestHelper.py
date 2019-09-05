@@ -1,4 +1,3 @@
-import logging
 import queue
 import unittest
 from contextlib import contextmanager, ExitStack
@@ -372,11 +371,6 @@ def verify_local_bear(bear,
                              needs to be created.
     :return:                 A unittest.TestCase object.
     """
-    if timeout:
-        logging.warning('timeout is ignored as the timeout set in the repo '
-                        'configuration will be sufficient. Use pytest-timeout '
-                        'or similar to achieve same result.')
-
     @generate_skip_decorator(bear)
     class LocalBearTest(LocalBearTestHelper):
 
