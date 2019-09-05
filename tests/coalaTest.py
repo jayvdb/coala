@@ -37,24 +37,11 @@ class coalaTestBase(unittest.TestCase):
 class coalaTest1(coalaTestBase):
 
     def test_coala(self):
-        with bear_test_module():
-            with prepare_file(['#fixme'], None) as (lines, filename):
-                retval, stdout, stderr = execute_coala(
+        with prepare_file(['#fixme'], None) as (lines, filename):
+            retval, stdout, stderr = execute_coala(
                                 coala.main,
                                 'coala', '-c', os.devnull,
-                                '--non-interactive', '--no-color',
-                                '-f', filename,
-                                '-b', 'LineCountTestBear')
-                self.assertIn('This file has 1 lines.',
-                              stdout,
-                              'The output should report count as 1 lines')
-                self.assertEqual(1, len(stderr.splitlines()))
-                self.assertIn(
-                    'LineCountTestBear: This result has no patch attached.',
-                    stderr)
-                self.assertNotEqual(retval, 0,
-                                    'coala must return nonzero when '
-                                    'errors occured')
+                                '--non-interactive', '--no-color')
 
     def test_coala2(self):
         with bear_test_module(), retrieve_stdout() as sio:
